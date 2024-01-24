@@ -14,6 +14,10 @@ import { useGlobalState } from "~~/services/store/store";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 import { appChains } from "~~/services/web3/wagmiConnectors";
 import "~~/styles/globals.css";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
+
 
 const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
   const price = useNativeCurrencyPrice();
@@ -55,7 +59,9 @@ const ScaffoldEthAppWithProviders = (props: AppProps) => {
         avatar={BlockieAvatar}
         theme={isDarkTheme ? darkTheme() : lightTheme()}
       >
-        <ScaffoldEthApp {...props} />
+        <QueryClientProvider client={queryClient}>
+          <ScaffoldEthApp {...props} />
+        </QueryClientProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

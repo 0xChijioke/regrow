@@ -257,6 +257,7 @@ export type UseScaffoldEventHistoryData<
   | IsContractDeclarationMissing<
       any[],
       {
+        profileId: string | null;
         log: Log<bigint, number, false, TEvent, false, [TEvent], TEventName>;
         args: AbiParametersToPrimitiveTypes<TEvent["inputs"]> &
           GetEventArgs<
