@@ -10,7 +10,7 @@ const client = new GraphQLClient(graphqlEndpoint);
 const IPFSClient = getIPFSClient();
 
 
-export const fetchProfiles = async (first: number, skip?: number) => {
+export const fetchProfilesQuery = async (first: number, skip?: number) => {
   try {
     const data = await client.request(getProfilesQuery, {
       first,
