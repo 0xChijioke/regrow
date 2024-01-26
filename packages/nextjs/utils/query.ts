@@ -6,29 +6,6 @@ export const graphqlEndpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL || "";
 
 
 // Query to fetch profiles
-// export const getProfilesQuery = gql`
-//   {
-//     profiles(first: 10) {
-//       createdAt
-//       anchor
-//       name
-//       nonce
-//       id
-//       metadata {
-//         pointer
-//         protocol
-//         id
-//       }
-//       updatedAt
-//       owner {
-//         id
-//       }
-//     }
-//   }
-// `;
-
-
-
 export const getProfilesQuery = gql`
   query GetProfiles($first: Int!, $skip: Int!) {
     profiles(first: $first, skip: $skip) {

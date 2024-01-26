@@ -15,7 +15,7 @@ import Link from "next/link";
                     <div className="justify-end">Owner <Address address={profile.owner.id} /></div>
                     <div className="card-actions justify-end">
                         <Link href={`/Profile/${profile.id}`} key={profile.id}>
-                            <button className="btn p-2 rounded-xl tracking-wide text-sm btn-primary">Learn now!</button>
+                            <button className="btn p-2 rounded-xl tracking-wide text-sm btn-primary">Learn more</button>
                         </Link>
                     </div>
                 </div>
