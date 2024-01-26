@@ -23,6 +23,11 @@ export const menuLinks: HeaderMenuLink[] = [
     icon: <UsersIcon className="h-4 w-4" />,
   },
   {
+    label: "Create Profile",
+    href: "/create",
+    icon: <UsersIcon className="h-4 w-4" />,
+  },
+  {
     label: "Debug Contracts",
     href: "/debug",
     icon: <BugAntIcon className="h-4 w-4" />,
@@ -96,7 +101,7 @@ export const Header = () => {
             <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">Regrow</span>
+            <span className="font-bold leading-tight">ReGrow</span>
             <span className="text-xs">Fund growth</span>
           </div>
         </Link>

@@ -1,32 +1,85 @@
 MVP To-Do List:
 
-    Profile Creation:
-        Implement the createProfile function to allow users to create profiles.
-        Ensure that roles are granted to the profile owner and members.
+    1. Profile Creation and Display:
 
-    Profile Details:
-        Implement the getProfileById and getProfileByAnchor functions to retrieve profile details.
+    Objective: Allow users to create profiles and display them on the frontend.
+        Implement a form on the frontend to allow users to create profiles.
+        Use the createProfile function in your contract to create profiles.
+        Fetch and display profiles on the frontend using GraphQL queries.
 
-    Profile Updates:
-        Implement the updateProfileName function for changing profile names.
-        Implement the updateProfileMetadata function for updating profile metadata.
-        Implement the addMembers and removeMembers functions for managing profile members.
+2. Profile Update:
 
-    Ownership Transfer:
-        Implement the updateProfilePendingOwner and acceptProfileOwnership functions for transferring ownership.
+    Objective: Enable users to update profile information.
+        Implement a profile update form on the frontend.
+        Use the updateProfileName and updateProfileMetadata functions in your contract for updating profile information.
+        Provide UI elements to edit profile details.
 
-    Access Control:
-        Ensure that only the profile owner can execute certain functions (use the onlyProfileOwner modifier).
+3. Profile Ownership:
 
-    Recover Funds:
-        Implement the recoverFunds function to allow the Allo owner to recover funds.
+    Objective: Display and manage ownership of profiles.
+        Display the owner of each profile on the frontend.
+        Allow only the profile owner to update profile information.
+        Implement a mechanism to transfer ownership using the updateProfilePendingOwner and acceptProfileOwnership functions.
 
-    Events:
-        Emit events for various actions to provide a clear history of profile-related activities (e.g., ProfileCreated, ProfileNameUpdated, etc.).
+4. Membership Management:
 
-    Testing:
-        Write tests to ensure the functionality of each implemented feature.
+    Objective: Implement features for adding and removing members from profiles.
+        Display the list of members on the frontend for each profile.
+        Implement forms to add and remove members.
+        Use the addMembers and removeMembers functions in your contract.
 
+5. Fund Recovery:
+
+    Objective: Provide functionality for fund recovery (only for users with the ALLO_OWNER role).
+        Implement a UI element that allows the ALLO_OWNER to trigger the fund recovery.
+        Use the recoverFunds function in your contract for fund recovery.
+
+6. Error Handling and User Feedback:
+
+    Objective: Implement proper error handling and provide feedback to users.
+        Ensure the frontend handles errors gracefully, displaying meaningful error messages.
+        Implement loading indicators during transactions or data fetching.
+
+7. Pagination and Load More:
+
+    Objective: Implement pagination to load more profiles.
+        Enhance the frontend to fetch profiles in batches, implementing a "Load More" button.
+        Use the GraphQL queries getProfilesQuery with variables for pagination.
+
+8. Image Extraction:
+
+    Objective: Extract and display base64 images from HTML data (if applicable).
+        Implement the extractBase64Image function in your frontend to display images associated with profiles.
+
+9. Unit Testing:
+
+    Objective: Implement unit tests for your frontend components.
+        Write tests to ensure the proper functioning of each component.
+        Test user interactions, contract interactions, and error handling.
+
+10. Community Engagement:
+
+    Objective: Engage the community and gather feedback.
+        Launch your frontend to a limited audience for testing.
+        Encourage users to provide feedback and report any issues.
+
+Next Steps:
+
+    Development Iteration:
+        Implement each feature incrementally, testing thoroughly as you progress.
+        Debug and resolve any issues that arise during development.
+
+    Community Feedback:
+        Engage with the community, gather feedback on the MVP, and make iterative improvements.
+
+    Documentation:
+        Document your frontend application, including how to use different features.
+
+    Deployment:
+        Deploy your MVP frontend to a staging environment for broader testing.
+
+    Public Release:
+        Release your dApp to the public, considering security and usability.
        Applying Similar Principles to Profile Management:
 
     ProfilesList (Homepage):

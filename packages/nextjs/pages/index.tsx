@@ -1,10 +1,14 @@
 import type { NextPage } from "next";
 import { MetaHeader } from "~~/components/MetaHeader";
 import Hero from "~~/components/homepage/Hero";
+import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { getIPFSClient } from "~~/services/ipfs";
 
 
 const Home: NextPage = () => {
+
+  const { data: deployedContractData } = useDeployedContractInfo("Registry");
+  console.log(deployedContractData)
   
   return (
     <>
