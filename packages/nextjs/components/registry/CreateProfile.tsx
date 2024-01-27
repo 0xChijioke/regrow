@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
-import { useTransactionCount } from 'wagmi';
 import { useAccount } from "wagmi";
 import { AddressInput, InputBase } from "../scaffold-eth";
+import toast from "react-hot-toast";
+import { usePublicClient } from "wagmi";
 
 interface Tmetadata {
     protocol: bigint;
@@ -10,7 +11,8 @@ interface Tmetadata {
 }
 
 const CreateProfile = () => {
-    const { address } = useAccount();
+  const { address } = useAccount();
+  const publicClient = usePublicClient()
 
     const [nonce, setNonce] = useState<bigint>();
     const [name, setName] = useState<string>("");
@@ -23,9 +25,9 @@ const CreateProfile = () => {
     // State for handling loading and success/error messages
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  
-  const characterLimit = 300;
+    const [errorMessage, setErrorMessage] = useState('');
+    
+    const characterLimit = 300;
   
 
 
@@ -45,10 +47,52 @@ const CreateProfile = () => {
           console.log("Transaction blockHash", txnReceipt.blockHash);
         },
     });
+  
+    
+    const createProfileFunc = async () => {
+      
+      // Validate inputs
+      if (!name || !address) {
+        toast.error('Invalid parameters.');
+        return;
+      }
+      // Set nouce
+      const result = await publicClient.getTransactionCount({
+        address: address
+      })
+      setNonce(BigInt(result))
 
-    const createProfileFunc = async () => {        
+      // Set owner
+      setOwner(address);
 
-    }
+      // Set metadata(dummy for now)
+      setMetadata({protocol: BigInt("1"), pointer: "Test case"})
+
+  
+      // Additional validation logic can be added as needed
+      console.log("nounce: ", nonce)
+      console.log("name: ", name)
+      console.log("owner: ", owner)
+      console.log("members: ", members)
+      console.log("metadata: ", metadata)
+
+   
+      // Call the createProfileWrite hook
+      try {
+        await createProfileWrite();
+        // If the above line executes successfully, it means the transaction was sent.
+        // You might want to provide additional feedback based on the success.
+        toast.success('Profile creation initiated.');
+        setNonce(undefined);
+        setName('');
+        setMembers([]);
+        setMetadata(undefined);
+      } catch (error) {
+        // Handle error cases
+        console.error('Error creating profile:', error);
+        toast.error('Error creating profile. Please try again.');
+      }
+    };
 
 
   
@@ -68,6 +112,19 @@ const CreateProfile = () => {
       if (inputText.length <= characterLimit) {
         setDescription(inputText);
       } else return;
+    };
+  
+    const handleDragOver = (e: any) => {
+      e.preventDefault();
+    };
+
+    const handleDrop = (e: any) => {
+      e.preventDefault();
+      const file = e.dataTransfer.files[0];
+      if (file) {
+          setProfileImage(file.name);
+          // Add logic to handle file upload
+      }
     };
   
 
@@ -102,7 +159,11 @@ const CreateProfile = () => {
           <label className="block mt-4">
             Profile Image:
           </label>
-            <div className="flex items-center justify-center mt-2">
+          <div
+            className="flex items-center justify-center mt-2"            
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+          >
                 <label className="flex items-center w-[100%] bg-base-200 justify-center w-32 h-32 border-2 border-primary border-dashed rounded-md cursor-pointer hover:border-white">
                     <input type="file" className="hidden w-full" onChange={(e) => setProfileImage(e.target.value)} />
                     <span className="text-gray-500">
@@ -123,9 +184,11 @@ const CreateProfile = () => {
                     </span>
                     <span className="ml-2 text-gray-500">Choose a file</span>
                 </label>
-                {profileImage && (
-                    <span className="ml-4 text-gray-500">{profileImage}</span>
-                )}
+            </div>
+            <div>
+              {profileImage && (
+                  <span>{profileImage}</span>
+              )}
             </div>
 
           <br />
