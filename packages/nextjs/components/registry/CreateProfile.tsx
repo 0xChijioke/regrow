@@ -4,11 +4,9 @@ import { useAccount } from "wagmi";
 import { AddressInput, InputBase } from "../scaffold-eth";
 import toast from "react-hot-toast";
 import { usePublicClient } from "wagmi";
+import { Tmetadata } from "~~/types/types";
 
-interface Tmetadata {
-    protocol: bigint;
-    pointer: string;
-}
+
 
 const CreateProfile = () => {
   const { address } = useAccount();
@@ -27,7 +25,7 @@ const CreateProfile = () => {
     const [isSuccess, setIsSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     
-    const characterLimit = 300;
+    const characterLimit = 600;
   
 
 

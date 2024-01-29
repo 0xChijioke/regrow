@@ -3,6 +3,7 @@ import { Spinner } from "../assets/Spinner";
 import ProfileCard from "./ProfileCard";
 import { useProfiles } from "~~/contexts/profilesContext";
 import { Profile } from "~~/types/types";
+import Search from "../Search";
 
 const ProfilesList = () => {
   const PAGE_SIZE = 9;
@@ -23,6 +24,9 @@ const ProfilesList = () => {
           <Spinner />
         </div>
       )}
+      <div className="w-fit">
+        <Search />
+      </div>
 
       <div className="p-5 lg:grid lg:grid-cols-3">
         {profiles && profiles.map((profile: Profile) => <ProfileCard key={profile.id} profile={profile} />)}

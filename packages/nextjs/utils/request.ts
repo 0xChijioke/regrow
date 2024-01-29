@@ -38,18 +38,4 @@ export const fetchProfileById = async (id: string) => {
 
 
 
-// Your function to extract base64 image from HTML
-function extractBase64Image(htmlData: string) {
-  // Replace this with your logic to extract the base64 image from HTML
-  // Example: Use a regular expression to find the base64-encoded image data
-  const match = htmlData.match(/<img\s+.*?src\s*=\s*['"](data:image\/[^'"]+)['"].*?>/i);
-  
-  if (match && match[1]) {
-    return match[1];
-  } else {
-    console.error('Image not found in HTML data:', htmlData);
-    return 'default-image-url'; // Set a default image URL if extraction fails
-  }
-}
-
 

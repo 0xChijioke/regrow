@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { Bars3Icon, BugAntIcon, UsersIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
+import Search from "./Search";
 
 type HeaderMenuLink = {
   label: string;

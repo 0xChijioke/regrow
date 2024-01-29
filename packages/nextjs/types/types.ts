@@ -1,4 +1,13 @@
 
+
+export type Tmetadata = {
+    protocol: bigint;
+    pointer: string;
+}
+
+
+
+
 export type Profile = {
     id: string;
     createdAt: string;
