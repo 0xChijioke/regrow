@@ -1,16 +1,12 @@
-// utils/searchUtils.ts
-import { Profile } from '~~/types/types';
+// utils/search.ts
+import { searchProfiles } from '~~/utils/request';
 
-// Function to perform search on profiles
-export const searchProfiles = (profiles: Profile[], searchTerm: string): Profile[] => {
-    // Convert the search term to lowercase for case-insensitive search
-    const searchQuery = searchTerm.toLowerCase().trim();
-
-    // Perform search based on profile name, owner, members, and anchor
-    return profiles.filter(profile =>
-        profile.name.toLowerCase().includes(searchQuery) ||
-        profile.owner.id.toLowerCase().includes(searchQuery) ||
-        profile.members.accounts.some((account: { id: string; }) => account.id.toLowerCase().includes(searchQuery)) ||
-        profile.anchor.toLowerCase().includes(searchQuery)
-    );
+export const searchProfilesQuery = async (search: string, address: string, pageSize: number, skip: number) => {
+  try {
+    const data: any = await searchProfiles(pageSize, skip, search, address);
+    return data.profiles;
+  } catch (error) {
+    console.error('Error searching profiles:', error);
+    throw error;
+  }
 };

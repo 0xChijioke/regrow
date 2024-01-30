@@ -7,10 +7,12 @@ export const graphqlEndpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL || "";
 
 // Query to fetch profiles
 export const getProfilesQuery = gql`
-query GetProfiles($first: Int!, $skip: Int!) {
+query GetProfiles($first: Int!, $skip: Int, $orderBy: String, $orderDirection: String) {
   profiles(
     first: $first
     skip: $skip
+    orderBy: $orderBy
+    orderDirection: $orderDirection
     ) {
       createdAt
       anchor

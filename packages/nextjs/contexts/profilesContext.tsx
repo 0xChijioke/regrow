@@ -1,12 +1,26 @@
 // context/ProfilesContext.tsx
+import { orderBy } from 'lodash';
 import { createContext, useContext, ReactNode, useState, useEffect, useMemo } from 'react';
 import { Profile } from '~~/types/types';
 import { fetchProfilesQuery } from '~~/utils/request';
 
+// Enum for valid order fields
+export enum OrderByField {
+  ID = 'id',
+  Name = 'name',
+  CreatedAt = 'createdAt',
+  UpdatedAt = 'updatedAt',
+  Owner = 'owner',
+}
+
+// Type for order direction
+type OrderDirection = 'asc' | 'desc';
+
+
 interface ProfilesContextType {
   profiles: Profile[];
   loading: boolean;
-  fetchProfiles: (offset: number, limit: number) => Promise<void>;
+  fetchProfiles: (offset: number, limit: number, orderBy?: OrderByField, orderDirection?: OrderDirection) => Promise<void>;
 }
 
 const ProfilesContext = createContext<ProfilesContextType | undefined>(undefined);
@@ -30,10 +44,10 @@ export const ProfilesProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, [profiles]);
 
   
-  const fetchProfiles = async (pageSize: number, skip: number) => {
+  const fetchProfiles = async (pageSize: number, skip: number, orderBy?: string, orderDirection?: string) => {
     setLoading(true);
     try {
-      const data: any = await fetchProfilesQuery(pageSize, skip);
+      const data: any = await fetchProfilesQuery(pageSize, skip, orderBy, orderDirection);
       // Combine existing profiles with new ones and filter duplicates
       setProfiles((prevProfiles) => [
         ...prevProfiles,
@@ -50,11 +64,9 @@ export const ProfilesProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   
   useEffect(() => {
-      fetchProfiles(9, 0);
+    if (!profiles.length) fetchProfiles(9, 0, OrderByField.CreatedAt, "desc");
   }, []);
   
-  
-  console.log(memoizedProfiles);
 
   return (
     <ProfilesContext.Provider value={{ profiles: memoizedProfiles, loading, fetchProfiles }}>

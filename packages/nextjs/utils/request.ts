@@ -1,6 +1,6 @@
 // request.ts
 import { GraphQLClient } from "graphql-request";
-import { getProfileById, getProfilesQuery } from './query';
+import { getProfileById, getProfilesQuery, searchProfilesQuery } from './query';
 import { getIPFSClient } from "~~/services/ipfs";
 
 
@@ -10,11 +10,30 @@ const client = new GraphQLClient(graphqlEndpoint);
 const IPFSClient = getIPFSClient();
 
 
-export const fetchProfilesQuery = async (first: number, skip?: number) => {
+export const fetchProfilesQuery = async (first: number, skip?: number, orderBy?: string, orderDirection?: string) => {
   try {
     const data = await client.request(getProfilesQuery, {
       first,
       skip,
+      orderBy,
+      orderDirection,
+    });
+
+    
+    return data;
+  } catch (error) {
+    console.error("Error fetching profiles:", error);
+    throw error;
+  }
+};
+
+export const searchProfiles = async (first: number, skip?: number, search?: string, address?: string) => {
+  try {
+    const data = await client.request(searchProfilesQuery, {
+      first,
+      skip,
+      search,
+      address
     });
 
     
