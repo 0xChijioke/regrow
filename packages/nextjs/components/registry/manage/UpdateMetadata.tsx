@@ -19,7 +19,7 @@ const UpdateMetadata = ({ profile }: { profile: ProfileDetail }) => {
 
 
   const handleMetadataUpdate = async () => {
-    // You can add additional logic or UI updates after the update
+    
   };
 
   const characterLimit = 600;
