@@ -8,9 +8,11 @@ import { fetchProfilesQuery } from '~~/utils/request';
 export enum OrderByField {
   ID = 'id',
   Name = 'name',
+  Owner = 'owner',
+  Nonce = 'nonce',
+  Anchor = 'anchor',
   CreatedAt = 'createdAt',
   UpdatedAt = 'updatedAt',
-  Owner = 'owner',
 }
 
 // Type for order direction
