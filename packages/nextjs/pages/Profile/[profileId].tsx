@@ -15,6 +15,7 @@ import ManageMembers from '~~/components/registry/manage/ManageMembers';
 import TransferOwnership from '~~/components/registry/manage/TransferOwnership';
 import { useScaffoldContractRead } from '~~/hooks/scaffold-eth';
 import { zeroAddress } from 'viem';
+import AcceptOwnership from '~~/components/registry/manage/AcceptOwnership';
 
 
 const ProfileDetail = () => {
@@ -150,8 +151,10 @@ const ProfileDetail = () => {
                   </div>
                   <div className='flex justify-end flex-nowrap'><span className='px-2 font-semibold'>Owned by </span><Address address={profile.owner.id} /></div><br />
                   {pendingOwner !== zeroAddress && (
-                    <div className='flex justify-end flex-nowrap'><span className='px-2 font-semibold'>Pending owner </span><Address address={pendingOwner} /></div>
+                    <div className='flex justify-end flex-nowrap'><span className='px-2 font-semibold'>Pending owner </span><Address address={pendingOwner} />
+                    </div>
                   )}
+                  {address === pendingOwner && <AcceptOwnership profileId={profile.id} refetch={refetch} />}
                   <div className="w-full justify-end flex">
                     {profile.memberRole.accounts.length > 0 && (
                       <div className='w-fit my-2 flex-start'>

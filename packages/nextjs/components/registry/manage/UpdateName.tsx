@@ -52,8 +52,14 @@ const UpdateName = ({ profile, refetch }: { profile: ProfileDetail, refetch: () 
             <div className="modal-content">
               <label>
                 New Name:
-                <InputBase placeholder="Profile name" value={name} required onChange={e => setName(e)} />
+                <InputBase placeholder="Profile name" value={name} onChange={e => setName(e)} />
               </label>
+
+              
+
+              <p className="text-sm text-warning mt-2">
+                Note: Updating the profile name will generate a new anchor address.
+              </p>
 
               {isUpdatingName && <p>Updating name...</p>}
               {/* {nameUpdateError && (
