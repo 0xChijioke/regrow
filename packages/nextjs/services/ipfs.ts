@@ -21,8 +21,8 @@ export type Config = {
     });
   };
   
-  export default class IPFSClient {
-    private jwt: string;
+export default class IPFSClient {
+    private jwt: string; 
   
     private readGateway: string;
   
@@ -48,7 +48,9 @@ export type Config = {
     async fetchText(cid: string) {
       const url = this.fileUrl(cid);
       const resp = await fetch(url);
-      return await resp.text();
+      // return
+      const res = await resp.text();
+      console.log(res)
     }
   
     async fetchJson(cid: string) {

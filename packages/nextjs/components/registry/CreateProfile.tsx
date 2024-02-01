@@ -5,6 +5,8 @@ import { AddressInput, InputBase } from "../scaffold-eth";
 import toast from "react-hot-toast";
 import { usePublicClient } from "wagmi";
 import { Tmetadata } from "~~/types/types";
+import { IPFSClient } from "~~/utils/request";
+import { uploadImageToIPFS } from "~~/helpers/uploadImg";
 
 
 
@@ -18,14 +20,14 @@ const CreateProfile = () => {
     const [owner, setOwner] = useState<string>("");
     const [members, setMembers] = useState<string[]>([]);
     // Data for metadata
-    const [description, setDescription] = useState('');
-    const [profileImage, setProfileImage] = useState('');
+    const [description, setDescription] = useState<string>('');
+    const [profileImage, setProfileImage] = useState<File | null>();
     // State for handling loading and success/error messages
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    
     const characterLimit = 600;
+    
   
 
 
@@ -63,11 +65,40 @@ const CreateProfile = () => {
       // Set owner
       setOwner(address);
 
-      // Set metadata(dummy for now)
-      setMetadata({protocol: BigInt("1"), pointer: "Test case"})
+
+      // Upload image to IPFS
+      let imageCID = '';
+      if (profileImage) {
+        try {
+          const imageBlob = new Blob([profileImage], { type: profileImage.type });
+          imageCID = await uploadImageToIPFS(imageBlob);
+          console.log(imageCID)
+        } catch (error) {
+          console.error('Error uploading image to IPFS:', error);
+          toast.error('Error uploading image. Please try again.');
+          return;
+        }
+      }
+
+      // Upload metadata to IPFS
+    try {
+      const metadataCID = await IPFSClient.pinJSON({
+        // Add your metadata structure here
+        // For example:
+        name,
+        description,
+        profileImage: imageCID,
+      });
+      setMetadata({protocol: BigInt('1'), pointer: metadataCID});
+    } catch (error) {
+      console.error('Error uploading metadata to IPFS:', error);
+      toast.error('Error creating profile. Please try again.');
+      return;
+    }
+
 
   
-      // Additional validation logic can be added as needed
+      // Additional validation logic ?
       console.log("nounce: ", nonce)
       console.log("name: ", name)
       console.log("owner: ", owner)
@@ -77,9 +108,7 @@ const CreateProfile = () => {
    
       // Call the createProfileWrite hook
       try {
-        await createProfileWrite();
-        // If the above line executes successfully, it means the transaction was sent.
-        // You might want to provide additional feedback based on the success.
+        // await createProfileWrite();
         toast.success('Profile creation initiated.');
         setNonce(undefined);
         setName('');
@@ -119,12 +148,15 @@ const CreateProfile = () => {
     const handleDrop = (e: any) => {
       e.preventDefault();
       const file = e.dataTransfer.files[0];
-      if (file) {
-          setProfileImage(file.name);
-          // Add logic to handle file upload
-      }
-    };
+      setProfileImage(file);
+  };
+
   
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    setProfileImage(file);
+  };
+
 
   
 
@@ -136,7 +168,7 @@ const CreateProfile = () => {
         <h2 className="text-center font-semibold mb-5">Create Profile</h2>
         {/* Add form elements for profile creation */}
         <form onSubmit={(e) => { e.preventDefault(); createProfileFunc(); }}>
-          {/* Add input fields for name, description, profile image, owner, and members */}
+          {/* Add input fields for name, description, profile image, and members */}
           <label>
             Name:
             <InputBase placeholder="Profile name" value={name} onChange={(e) => setName(e)} />
@@ -163,37 +195,46 @@ const CreateProfile = () => {
             onDrop={handleDrop}
           >
                 <label className="flex items-center w-[100%] bg-base-200 justify-center w-32 h-32 border-2 border-primary border-dashed rounded-md cursor-pointer hover:border-white">
-                    <input type="file" className="hidden w-full" onChange={(e) => setProfileImage(e.target.value)} />
-                    <span className="text-gray-500">
-                        <svg
+                    <input type="file" className="hidden w-full" onChange={handleFileInputChange} />
+                    {profileImage ? (
+                      // Display image
+                      <img
+                        src={URL.createObjectURL(profileImage)}
+                        alt="Profile Preview"
+                        className="w-32 h-32 rounded-md border-dashed border-primary"
+                      />
+                    ) : (
+                      // Display "Choose a file" icon and text
+                      <>
+                        <span className="text-gray-500">
+                          <svg
                             className="w-6 h-6"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg"
-                        >
+                          >
                             <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                             />
-                        </svg>
-                    </span>
-                    <span className="ml-2 text-gray-500">Choose a file</span>
+                          </svg>
+                        </span>
+                        <span className="ml-2 text-gray-500">Choose a file</span>
+                      </>
+                    )}
                 </label>
             </div>
             <div>
-              {profileImage && (
-                  <span>{profileImage}</span>
-              )}
+            {profileImage && (
+            <div className="mt-2">
+              {profileImage.name}
+            </div>
+          )}
             </div>
 
-          <br />
-          {/* <label>
-            Owner:
-            <input type="text" value={owner} onChange={(e) => setOwner(e.target.value)} />
-          </label> */}
           <br />
 
           <label className="flex flex-col">

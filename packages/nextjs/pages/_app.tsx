@@ -17,8 +17,9 @@ import "~~/styles/globals.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ProfilesProvider } from "~~/contexts/profilesContext";
 
-const queryClient = new QueryClient();
 
+
+const queryClient = new QueryClient();
 
 const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
   const price = useNativeCurrencyPrice();

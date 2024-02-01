@@ -2,16 +2,20 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react'; 
 import { Profile, ProfileDetail } from '~~/types/types';
 import { useProfiles } from '~~/contexts/profilesContext';
-import { fetchProfileById } from '~~/utils/request';
+import { IPFSClient, fetchProfileById } from '~~/utils/request';
 import { Address } from '~~/components/scaffold-eth';
 import { MetaHeader } from '~~/components/MetaHeader';
 import { useQuery } from 'react-query';
 import { useAccount } from 'wagmi';
 import Placeholder from '~~/components/assets/Placeholder';
-import { formatTime } from '~~/utils/formateTime';
+import { formatTime } from '~~/helpers/formateTime';
 import UpdateMetadata from '~~/components/registry/manage/UpdateMetadata';
 import UpdateName from '~~/components/registry/manage/UpdateName';
 import ManageMembers from '~~/components/registry/manage/ManageMembers';
+import TransferOwnership from '~~/components/registry/manage/TransferOwnership';
+import { useScaffoldContractRead } from '~~/hooks/scaffold-eth';
+import { zeroAddress } from 'viem';
+
 
 const ProfileDetail = () => {
   const { address } = useAccount();
@@ -20,6 +24,14 @@ const ProfileDetail = () => {
   const [profile, setProfile] = useState<ProfileDetail | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+
+  // Check for pending owner
+  const { data: pendingOwner } = useScaffoldContractRead({
+    contractName: "Registry",
+    functionName: "profileIdToPendingOwner",
+    args: [profileId],
+  });
 
 
 
@@ -51,7 +63,34 @@ const ProfileDetail = () => {
   const profileCreated = profile?.createdAt ? formatTime(Number(profile.createdAt)) : '';
   const profileUpdated = profile?.updatedAt ? formatTime(Number(profile.updatedAt)) : '';
 
+  // const pollUntilMetadataIsAvailable = async (
+  //   pointer: string,
+  //   ): Promise<boolean> => {
+  //   let counter = 0;
+  
+  //   const fetchMetadata: any = async () => {
+  //     const metadata = profile && await IPFSClient.fetchText(pointer);
+  
+  //     console.log("metadata", metadata);
+  //     console.log("counter", counter);
+  //     if (metadata) {
+  //       console.log("metadata true");
+  //       return true;
+  //     } else {
+  //       console.log("metadata false");
+  //       counter++;
+  //       if (counter > 20) return false;
+  //       // Corrected: Return the result of the recursive call
+  //       return await new Promise((resolve) => setTimeout(resolve, 2000)).then(
+  //         fetchMetadata,
+  //       );
+  //     }
+  //   };
+  //   return await fetchMetadata();
+  // };
 
+  
+  // profile && console.log(profile.metadata.pointer)
   // console.log(profile)
   return (
     <div>
@@ -68,9 +107,28 @@ const ProfileDetail = () => {
             
             {/* Image & Description */}
             <div className="flex flex-col lg:flex-row">
-              <div className='w-full lg:flex-col flex-col-reverse lg:w-[40%] flex rounded-xl justify-center'>
-                  <div className='flex py-3 flex-nowrap'><span className='px-2'>Anchor: </span><Address address={profile.anchor} /></div>
+              <div className='w-full lg:flex-col flex-col-reverse lg:w-[40%] flex justify-center'>
+                <div className="flex justify-between">
+                  <div className='flex items-center py-3 flex-nowrap'><span className='px-2'>Anchor: </span><Address address={profile.anchor} /></div>
+                  {/* Dropdown */}
+                  <div className=''>
+                    {(profile?.owner.id.toLowerCase() === address?.toLowerCase()) && (
+
+                      <div className="dropdown dropdown-end">
+                      <div tabIndex={0} role="button" className="btn rounded-md py-1 m-1">Manage</div>
+                      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><UpdateName profile={profile} refetch={refetch} /></li>
+                        <li><UpdateMetadata profile={profile} /></li>
+                        <li><ManageMembers profile={profile} refetch={refetch} /></li>
+                        <li><TransferOwnership profileId={profile.id} refetch={refetch} /></li>
+                      </ul>
+                    </div>
+                    )}
+                  </div>
+                </div>
+                <div className="rounded-xl">
                   <Placeholder />
+                </div>
               </div>
               <div className='w-fit flex-col lg:p-10'>
 
@@ -91,6 +149,9 @@ const ProfileDetail = () => {
                   )}
                   </div>
                   <div className='flex justify-end flex-nowrap'><span className='px-2 font-semibold'>Owned by </span><Address address={profile.owner.id} /></div><br />
+                  {pendingOwner !== zeroAddress && (
+                    <div className='flex justify-end flex-nowrap'><span className='px-2 font-semibold'>Pending owner </span><Address address={pendingOwner} /></div>
+                  )}
                   <div className="w-full justify-end flex">
                     {profile.memberRole.accounts.length > 0 && (
                       <div className='w-fit my-2 flex-start'>
@@ -106,20 +167,6 @@ const ProfileDetail = () => {
                     )}
 
                   </div>
-                </div>
-                {/* Dropdown */}
-                <div className=''>
-                  {(profile?.owner.id.toLowerCase() === address?.toLowerCase()) && (
-
-                    <div className="dropdown">
-                    <div tabIndex={0} role="button" className="btn rounded-md py-1 m-1">Manage</div>
-                    <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                      <li><UpdateName profile={profile} refetch={refetch} /></li>
-                      <li><UpdateMetadata profile={profile} /></li>
-                      <li><ManageMembers profile={profile} refetch={refetch} /></li>
-                    </ul>
-                  </div>
-                  )}
                 </div>
               </div>
             </div>
