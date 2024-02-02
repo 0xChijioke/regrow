@@ -18,7 +18,6 @@ const TransferOwnership = ({ profileId, refetch }: { profileId: string, refetch:
 
     const handleTransferOwnership = async () => {
         await updatePendingOwner();
-        // You can add additional logic or UI updates after the update
     };
 
     return (
@@ -46,7 +45,7 @@ const TransferOwnership = ({ profileId, refetch }: { profileId: string, refetch:
                         <div className="modal-content">
                             <label>
                                 New Pending Owner:
-                                <AddressInput value={pendingOwner} required onChange={e => setPendingOwner(e)} />
+                                <AddressInput value={pendingOwner} onChange={e => setPendingOwner(e)} />
                             </label>
 
                             {isUpdatingPendingOwner && <p>Setting pending owner...</p>}

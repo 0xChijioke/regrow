@@ -4,7 +4,7 @@ import Link from "next/link";
 
 
  const ProfileCard = ({ profile }: { profile: Profile }) => {
-    // Implement rendering logic for a single profile card
+    // rendering logic for a single profile card
      return (
             <div className="card w-90% lg:w-80 m-3 glass">
                 <figure>

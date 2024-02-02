@@ -6,8 +6,11 @@ import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
 
-  const { data: deployedContractData } = useDeployedContractInfo("Registry");
-  // console.log(deployedContractData)
+  // const { data: deployedAllo } = useDeployedContractInfo("Allo");
+  // console.log(deployedAllo)
+
+  // const { data: deployedRegistry } = useDeployedContractInfo("Registry");
+  // console.log(deployedRegistry)
   
   return (
     <>

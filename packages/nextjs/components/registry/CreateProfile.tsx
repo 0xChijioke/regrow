@@ -83,8 +83,6 @@ const CreateProfile = () => {
       // Upload metadata to IPFS
     try {
       const metadataCID = await IPFSClient.pinJSON({
-        // Add your metadata structure here
-        // For example:
         name,
         description,
         profileImage: imageCID,
@@ -106,7 +104,6 @@ const CreateProfile = () => {
       console.log("metadata: ", metadata)
 
    
-      // Call the createProfileWrite hook
       try {
         // await createProfileWrite();
         toast.success('Profile creation initiated.');
@@ -115,7 +112,7 @@ const CreateProfile = () => {
         setMembers([]);
         setMetadata(undefined);
       } catch (error) {
-        // Handle error cases
+        // Handle error
         console.error('Error creating profile:', error);
         toast.error('Error creating profile. Please try again.');
       }
@@ -166,9 +163,9 @@ const CreateProfile = () => {
 
       <div className="lg:w-[40%] w-[90%] rounded-xl bg-primary p-10">
         <h2 className="text-center font-semibold mb-5">Create Profile</h2>
-        {/* Add form elements for profile creation */}
+        {/* form elements for profile creation */}
         <form onSubmit={(e) => { e.preventDefault(); createProfileFunc(); }}>
-          {/* Add input fields for name, description, profile image, and members */}
+          {/* input fields for name, description, profile image, and members */}
           <label>
             Name:
             <InputBase placeholder="Profile name" value={name} onChange={(e) => setName(e)} />
@@ -179,7 +176,7 @@ const CreateProfile = () => {
 
             <textarea
               className="textarea textarea-bordered bg-base-200 h-[2.2rem] min-h-[6.2rem] px-4 w-full font-medium placeholder:text-gray/50 rounded-lg"
-              placeholder={`Enter Reason (limit: ${characterLimit} characters)`}
+              placeholder={`Enter description (limit: ${characterLimit} characters)`}
               value={description}
               onChange={e => handleDescriptionChange(e.target.value)}
             ></textarea>
@@ -204,7 +201,7 @@ const CreateProfile = () => {
                         className="w-32 h-32 rounded-md border-dashed border-primary"
                       />
                     ) : (
-                      // Display "Choose a file" icon and text
+                      // "Choose a file" icon and text
                       <>
                         <span className="text-gray-500">
                           <svg
@@ -256,7 +253,7 @@ const CreateProfile = () => {
           </label>
           <br />
   
-          {/* Button to submit the form */}
+          {/* Button to submit */}
           <div className="flex w-full justify-center">
             <button className="btn rounded-lg" type="submit" disabled={isLoading || isMining}>
               {isLoading ? 'Creating Profile...' : 'Create Profile'}
@@ -264,7 +261,7 @@ const CreateProfile = () => {
           </div>
         </form>
   
-        {/* Display success or error message */}
+        {/* success or error message */}
         {isSuccess && <p>Profile created successfully!</p>}
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       </div>

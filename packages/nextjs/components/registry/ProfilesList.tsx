@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Spinner } from "../assets/Spinner";
 import ProfileCard from "./ProfileCard";
 import { OrderByField, useProfiles } from "~~/contexts/profilesContext";
 import { Profile } from "~~/types/types";
-import Search from "../Search";
+// import { Spinner } from "../assets/Spinner";
+// import Search from "../Search";
+
 
 const ProfilesList = () => {
   const PAGE_SIZE = 9;
@@ -12,11 +13,11 @@ const ProfilesList = () => {
   const { profiles, loading, fetchProfiles } = useProfiles();
 
 
-  useEffect(() => {
-    // Fetch profiles when orderBy or orderDirection changes
-    fetchProfiles(PAGE_SIZE, 0, orderBy, orderDirection);
-    console.log("triggerd")
-  }, [orderBy, orderDirection]);
+  // useEffect(() => {
+  //   // Fetch profiles when orderBy or orderDirection changes
+  //   fetchProfiles(PAGE_SIZE, 0, orderBy, orderDirection);
+  //   // console.log("triggerd")
+  // }, [orderBy, orderDirection]);
 
 
   const handleLoadMore = () => {
@@ -38,7 +39,8 @@ const ProfilesList = () => {
 
   return (
     <div>
-      
+
+      {profiles.length > 0 && 
       <div className="flex-row flex justify-end items-center gap-x-4">
         {/* <Search /> */}
         <div>
@@ -62,16 +64,22 @@ const ProfilesList = () => {
           </button>
         </div>
       </div>
-
-      {profiles.length === 0 && loading && (
-        <div className="flex justify-center">
-          <Spinner />
-        </div>
-      )}
+}
 
       <div className="p-5 lg:grid lg:grid-cols-3">
-        {profiles && profiles.map((profile: Profile) => <ProfileCard key={profile.id} profile={profile} />)}
+        {profiles.length === 0 && loading ? (
+          // Render skeleton cards when loading
+          Array.from({ length: PAGE_SIZE }).map((_, index) => (
+            <div className="animate-pulse card w-90% lg:w-80 m-3 h-80 glass" key={index}></div>
+
+          ))
+        ) : (
+          profiles.map((profile: Profile) => (
+            <ProfileCard key={profile.id} profile={profile} />
+          ))
+        )}
       </div>
+
 
       {profiles.length > 0 && (
         <div className="items-center justify-center flex">

@@ -102,7 +102,7 @@ export const Header = () => {
             <Image alt="ReGrow logo" className="cursor-pointer" fill src="/logo.png" />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">ReGrow</span>
+            <span className="font-bold leading-tight">ReGrow🌱</span>
             <span className="text-xs">Fund growth</span>
           </div>
         </Link>
