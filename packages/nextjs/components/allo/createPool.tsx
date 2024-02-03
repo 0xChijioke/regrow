@@ -4,21 +4,25 @@ import { useAccount } from 'wagmi';
 import { InputBase, AddressInput } from '~~/components/scaffold-eth';
 import toast from 'react-hot-toast';
 import { Tmetadata } from '~~/types/types';
+import { debounce } from 'lodash';
+
+const QVSimple = "0xA9e9110fe3B4B169b2CA0e8825C7CE76EB0b9438"; // QVSimple address
 
 const CreatePool = ({profileId}: {profileId: string}) => {
   const { address } = useAccount();
 
-  const [strategy, setStrategy] = useState<string>();
+  const [name, setName] = useState<string>('');
+  const [strategy, setStrategy] = useState<string>('0xA9e9110fe3B4B169b2CA0e8825C7CE76EB0b9438'); // Temporarily set QVSimple address
   const [initStrategyData, setInitStrategyData] = useState();
-  const [token, setToken] = useState('');
-  const [amount, setAmount] = useState<bigint>();
-  const [metadata, setMetadata] = useState<Tmetadata>();
+  const [token, setToken] = useState('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'); // Set Native as inital token
+  const [amount, setAmount] = useState<string>('');
+  const [metadata, setMetadata] = useState<Tmetadata>({protocol: BigInt('1'), pointer: 'bafybeid47tux23bnyljcgm3jw3ifimaojazgknnjre7m4pcaiw5gommvta'}); // Dummy metadata
   const [managers, setManagers] = useState(['']);
 
   const { writeAsync: createPoolWrite, isLoading: isCreatingPool, isMining } = useScaffoldContractWrite({
     contractName: 'Allo',
     functionName: 'createPoolWithCustomStrategy',
-    args: [profileId, strategy, initStrategyData, token, amount, metadata, managers],
+    args: [profileId, strategy, initStrategyData, token, BigInt(amount), metadata, managers],
     blockConfirmations: 1,
     onBlockConfirmation: txnReceipt => {
       console.log('Transaction blockHash', txnReceipt.blockHash);
@@ -38,6 +42,13 @@ const CreatePool = ({profileId}: {profileId: string}) => {
     }
   };
 
+  
+  // Debounce the amount input field
+  const debouncedSetAmount = debounce((value: string) => {
+    setAmount(value);
+  }, 500);
+
+
   const handleAddManager = () => {
     setManagers([...managers, '']);
   };
@@ -54,6 +65,38 @@ const CreatePool = ({profileId}: {profileId: string}) => {
         <h2 className="text-center font-semibold mb-5">Create Pool</h2>
         <form onSubmit={(e) => { e.preventDefault(); createPoolFunc(); }}>
           {/* input fields for pool creation */}
+          <label className="flex flex-col mt-4">
+            Pool name:
+            <InputBase
+              value={name}
+              onChange={(e) => setName(e)}
+            />
+          </label>
+
+          <label className="flex flex-col mt-4">
+            Strategy:
+            <AddressInput
+              value={strategy}
+              placeholder={QVSimple}
+              onChange={(e) => setStrategy(e)}
+            />
+          </label>
+
+          <label className="flex flex-col mt-4">
+            Token:
+            <AddressInput
+              value={token}
+              onChange={(e) => setToken(e)}
+              placeholder='Token address'
+            />
+          </label>
+          <label className="flex flex-col mt-4">
+            Amount:
+            <AddressInput
+              value={amount}
+              onChange={(e) => debouncedSetAmount(e)}
+            />
+          </label>
           
           <label className="flex flex-col mt-4">
             Managers:
@@ -72,7 +115,7 @@ const CreatePool = ({profileId}: {profileId: string}) => {
 
           {/* Button to submit */}
           <div className="flex w-full justify-center">
-            <button className="btn rounded-lg" type="submit" disabled={isCreatingPool || isMining}>
+            <button className="btn rounded-lg" type="submit" disabled={!name || !token || isCreatingPool || isMining}>
               {isCreatingPool ? 'Creating Pool...' : 'Create Pool'}
             </button>
           </div>

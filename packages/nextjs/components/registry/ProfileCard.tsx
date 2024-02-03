@@ -14,7 +14,7 @@ import Link from "next/link";
                     <h2 className="card-title">{profile.name}</h2>
                     <div className="justify-end">Owner <Address address={profile.owner.id} /></div>
                     <div className="card-actions justify-end">
-                        <Link href={`/Profile/${profile.id}`} key={profile.id}>
+                        <Link href={`/profile/${profile.id}`} key={profile.id}>
                             <button className="btn p-2 rounded-xl tracking-wide text-sm btn-primary">View</button>
                         </Link>
                     </div>

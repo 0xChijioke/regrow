@@ -16,6 +16,7 @@ import TransferOwnership from '~~/components/registry/manage/TransferOwnership';
 import { useScaffoldContractRead } from '~~/hooks/scaffold-eth';
 import { zeroAddress } from 'viem';
 import AcceptOwnership from '~~/components/registry/manage/AcceptOwnership';
+import Link from 'next/link';
 
 
 const ProfileDetail = () => {
@@ -32,6 +33,12 @@ const ProfileDetail = () => {
     contractName: "Registry",
     functionName: "profileIdToPendingOwner",
     args: [profileId],
+  });
+  // Check if address is an owner or member of profile
+  const { data: isOwnerOrMember } = useScaffoldContractRead({
+    contractName: "Registry",
+    functionName: "isOwnerOrMemberOfProfile",
+    args: [profileId, address],
   });
 
 
@@ -64,32 +71,7 @@ const ProfileDetail = () => {
   const profileCreated = profile?.createdAt ? formatTime(Number(profile.createdAt)) : '';
   const profileUpdated = profile?.updatedAt ? formatTime(Number(profile.updatedAt)) : '';
 
-  // const pollUntilMetadataIsAvailable = async (
-  //   pointer: string,
-  //   ): Promise<boolean> => {
-  //   let counter = 0;
-  
-  //   const fetchMetadata: any = async () => {
-  //     const metadata = profile && await IPFSClient.fetchText(pointer);
-  
-  //     console.log("metadata", metadata);
-  //     console.log("counter", counter);
-  //     if (metadata) {
-  //       console.log("metadata true");
-  //       return true;
-  //     } else {
-  //       console.log("metadata false");
-  //       counter++;
-  //       if (counter > 20) return false;
-  //       // Corrected: Return the result of the recursive call
-  //       return await new Promise((resolve) => setTimeout(resolve, 2000)).then(
-  //         fetchMetadata,
-  //       );
-  //     }
-  //   };
-  //   return await fetchMetadata();
-  // };
-
+ 
   
   // profile && console.log(profile.metadata.pointer)
   // console.log(profile)
@@ -154,7 +136,15 @@ const ProfileDetail = () => {
                     <div className='flex justify-end flex-nowrap'><span className='px-2 font-semibold'>Pending owner </span><Address address={pendingOwner} />
                     </div>
                   )}
-                  {address === pendingOwner && <AcceptOwnership profileId={profile.id} refetch={refetch} />}
+                  {/* Accept and create pool */}
+                  <div>
+                    {address === pendingOwner && <AcceptOwnership profileId={profile.id} refetch={refetch} />}
+                    {isOwnerOrMember && 
+                      <Link href={`/create-pool/${profile.id}`} key={profile.id}>
+                      <button className="btn p-2 rounded-xl tracking-wide text-sm btn-primary">create pool</button>
+                  </Link>
+                    }
+                  </div>
                   <div className="w-full justify-end flex">
                     {profile.memberRole.accounts.length > 0 && (
                       <div className='w-fit my-2 flex-start'>

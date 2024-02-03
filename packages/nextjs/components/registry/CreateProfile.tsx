@@ -1,151 +1,183 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { useAccount } from "wagmi";
 import { AddressInput, InputBase } from "../scaffold-eth";
 import toast from "react-hot-toast";
 import { usePublicClient } from "wagmi";
 import { Tmetadata } from "~~/types/types";
-import { IPFSClient } from "~~/utils/request";
-import { uploadImageToIPFS } from "~~/helpers/uploadImg";
+import { useRouter } from "next/router";
+// import { IPFSClient } from "~~/utils/request";
+// import { uploadImageToIPFS } from "~~/helpers/uploadImg";
 
 
 
 const CreateProfile = () => {
+  const router = useRouter();
   const { address } = useAccount();
   const publicClient = usePublicClient()
 
-    const [nonce, setNonce] = useState<bigint>();
-    const [name, setName] = useState<string>("");
-    const [metadata, setMetadata] = useState<Tmetadata>();
-    const [owner, setOwner] = useState<string>("");
-    const [members, setMembers] = useState<string[]>([]);
-    // Data for metadata
-    const [description, setDescription] = useState<string>('');
-    const [profileImage, setProfileImage] = useState<File | null>();
-    // State for handling loading and success/error messages
-    const [isLoading, setIsLoading] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const characterLimit = 600;
-    
+
+  const [nonce, setNonce] = useState<number>(0);
+  const [name, setName] = useState<string>("");
+  const [metadata, setMetadata] = useState<Tmetadata>({protocol: BigInt('1'), pointer: 'bafybeid47tux23bnyljcgm3jw3ifimaojazgknnjre7m4pcaiw5gommvta'}); // Dummy metadata
+  const [owner, setOwner] = useState<string>("");
+  const [members, setMembers] = useState<string[]>([]);
+  // Data for metadata
+  const [description, setDescription] = useState<string>('');
+  const [profileImage, setProfileImage] = useState<File | null>();
+  // State for handling loading and success/error messages
+  // const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const characterLimit = 600;
   
 
 
-    const { writeAsync: createProfileWrite, isLoading: isCreatingProfile, isMining } = useScaffoldContractWrite({
-        contractName: "Registry",
-        functionName: "createProfile",
-        args: [
-            nonce,
-            name,
-            metadata,
-            owner,
-            members
-        ],
-        // value: parseEther("0.1"),
-        blockConfirmations: 1,
-        onBlockConfirmation: txnReceipt => {
-          console.log("Transaction blockHash", txnReceipt.blockHash);
-        },
-    });
-  
-    
-    const createProfileFunc = async () => {
+
+  const { writeAsync: createProfileWrite, isLoading, isMining } = useScaffoldContractWrite({
+      contractName: "Registry",
+      functionName: "createProfile",
+      args: [
+          BigInt(nonce),
+          name,
+          metadata,
+          owner,
+          members
+      ],
+      // value: parseEther("0.1"),
+      blockConfirmations: 1,
+      onBlockConfirmation: txnReceipt => {
+        console.log("Transaction blockHash", txnReceipt.blockHash);
+      },
+  });
+
+
+  useEffect(() => {
+    if (address) {
+      const computeNonce = async () => {
+        const result = await publicClient.getTransactionCount({
+          address: address
+        })
+        // Set nonce
+        setNonce(result);
       
-      // Validate inputs
-      if (!name || !address) {
-        toast.error('Invalid parameters.');
-        return;
+        // Set owner
+        setOwner(address);    
+  
       }
-      // Set nouce
-      const result = await publicClient.getTransactionCount({
-        address: address
-      })
-      setNonce(BigInt(result))
+      computeNonce();
+    }
 
-      // Set owner
-      setOwner(address);
+  },[address, nonce])
 
+  
 
-      // Upload image to IPFS
-      let imageCID = '';
-      if (profileImage) {
-        try {
-          const imageBlob = new Blob([profileImage], { type: profileImage.type });
-          imageCID = await uploadImageToIPFS(imageBlob);
-          console.log(imageCID)
-        } catch (error) {
-          console.error('Error uploading image to IPFS:', error);
-          toast.error('Error uploading image. Please try again.');
-          return;
-        }
-      }
-
-      // Upload metadata to IPFS
-    try {
-      const metadataCID = await IPFSClient.pinJSON({
-        name,
-        description,
-        profileImage: imageCID,
-      });
-      setMetadata({protocol: BigInt('1'), pointer: metadataCID});
-    } catch (error) {
-      console.error('Error uploading metadata to IPFS:', error);
-      toast.error('Error creating profile. Please try again.');
+  
+  const createProfileFunc = async () => {
+    
+    // Validate inputs
+    if (!name || !address) {
+      toast.error('Connect your wallet and Input profile name.');
       return;
     }
 
 
-  
-      // Additional validation logic ?
-      console.log("nounce: ", nonce)
-      console.log("name: ", name)
-      console.log("owner: ", owner)
-      console.log("members: ", members)
-      console.log("metadata: ", metadata)
+    // Upload image to IPFS
+    //   let imageCID = '';
+    //   if (profileImage) {
+    //     try {
+    //       const imageBlob = new Blob([profileImage], { type: profileImage.type });
+    //       imageCID = await uploadImageToIPFS(imageBlob);
+    //       console.log(imageCID)
+    //     } catch (error) {
+    //       console.error('Error uploading image to IPFS:', error);
+    //       toast.error('Error uploading image. Please try again.');
+    //       return;
+    //     }
+    //   }
 
-   
-      try {
-        // await createProfileWrite();
-        toast.success('Profile creation initiated.');
-        setNonce(undefined);
-        setName('');
-        setMembers([]);
-        setMetadata(undefined);
-      } catch (error) {
-        // Handle error
-        console.error('Error creating profile:', error);
-        toast.error('Error creating profile. Please try again.');
-      }
-    };
-
-
-  
-    const handleAddMember = () => {
-      setMembers([...members, ""]);
-    };
-
-    const handleMemberChange = (index: number, value: string) => {
-        const updatedMembers = [...members];
-        updatedMembers[index] = value;
-        setMembers(updatedMembers);
-    };
+    //   // Upload metadata to IPFS
+    // try {
+    //   const metadataCID = await IPFSClient.pinJSON({
+    //     name,
+    //     description,
+    //     profileImage: imageCID,
+    //   });
+    //   setMetadata({protocol: BigInt('1'), pointer: metadataCID});
+    // } catch (error) {
+    //   console.error('Error uploading metadata to IPFS:', error);
+    //   toast.error('Error creating profile. Please try again.');
+    //   return;
+    // }
     
-    const handleDescriptionChange = (value: string) => {
-      const inputText = value;
-  
-      if (inputText.length <= characterLimit) {
-        setDescription(inputText);
-      } else return;
-    };
-  
-    const handleDragOver = (e: any) => {
-      e.preventDefault();
-    };
+    
+    
 
-    const handleDrop = (e: any) => {
-      e.preventDefault();
-      const file = e.dataTransfer.files[0];
-      setProfileImage(file);
+
+    // Additional validation logic ?
+    console.log("nonce: ", nonce)
+    console.log("name: ", name)
+    console.log("owner: ", owner)
+    console.log("members: ", members)
+    console.log("metadata: ", metadata)
+
+
+    
+    
+    try {
+      
+      if (!nonce || nonce === 0 || !owner || !metadata) {
+        throw new Error("Invalid parameters.");
+      } 
+      
+      const profileId = await createProfileWrite();
+
+
+      // Why is the returned Id not valid?
+      console.log(profileId)
+      // Navigate to the newly created profile page
+      // if (profileId) {
+      //   router.push(`/profile/${profileId}`);
+      // }
+    } catch (error) {
+      // Handle error
+      console.error('Error creating profile:', error);
+      toast.error('Error creating profile. Please try again.');
+    } finally {
+      setNonce(0);
+      setName('');
+      setMembers([]);        
+    }
+  };
+
+
+
+  const handleAddMember = () => {
+    setMembers([...members, ""]);
+  };
+
+  const handleMemberChange = (index: number, value: string) => {
+      const updatedMembers = [...members];
+      updatedMembers[index] = value;
+      setMembers(updatedMembers);
+  };
+  
+  const handleDescriptionChange = (value: string) => {
+    const inputText = value;
+
+    if (inputText.length <= characterLimit) {
+      setDescription(inputText);
+    } else return;
+  };
+
+  const handleDragOver = (e: any) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: any) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    setProfileImage(file);
   };
 
   
@@ -191,7 +223,7 @@ const CreateProfile = () => {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           >
-                <label className="flex items-center w-[100%] bg-base-200 justify-center w-32 h-32 border-2 border-primary border-dashed rounded-md cursor-pointer hover:border-white">
+                <label className="flex items-center w-[100%] bg-base-200 justify-center h-32 border-2 border-primary border-dashed rounded-md cursor-pointer hover:border-white">
                     <input type="file" className="hidden w-full" onChange={handleFileInputChange} />
                     {profileImage ? (
                       // Display image
