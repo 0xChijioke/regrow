@@ -1,6 +1,6 @@
 // context/ProfilesContext.tsx
 import { orderBy } from 'lodash';
-import { createContext, useContext, ReactNode, useState, useEffect, useMemo } from 'react';
+import { createContext, useContext, ReactNode, useState, useEffect, useMemo, Dispatch, SetStateAction } from 'react';
 import { Profile } from '~~/types/types';
 import { fetchProfilesQuery } from '~~/utils/request';
 
@@ -21,6 +21,7 @@ type OrderDirection = 'asc' | 'desc';
 
 interface ProfilesContextType {
   profiles: Profile[];
+  setProfiles: Dispatch<SetStateAction<Profile[]>>;
   loading: boolean;
   fetchProfiles: (offset: number, limit: number, orderBy?: OrderByField, orderDirection?: OrderDirection) => Promise<void>;
 }
@@ -47,10 +48,14 @@ export const ProfilesProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   
   const fetchProfiles = async (pageSize: number, skip: number, orderBy?: string, orderDirection?: string) => {
+    
+    console.log('Fetching profiles...');
+    
     setLoading(true);
     try {
       const data: any = await fetchProfilesQuery(pageSize, skip, orderBy, orderDirection);
       // Combine existing profiles with new ones and filter duplicates
+      console.log('...');
       setProfiles((prevProfiles) => [
         ...prevProfiles,
         ...data.profiles,
@@ -71,7 +76,7 @@ export const ProfilesProvider: React.FC<{ children: ReactNode }> = ({ children }
   
 
   return (
-    <ProfilesContext.Provider value={{ profiles: memoizedProfiles, loading, fetchProfiles }}>
+    <ProfilesContext.Provider value={{ profiles: memoizedProfiles, setProfiles, loading, fetchProfiles }}>
       {children}
     </ProfilesContext.Provider>
   );

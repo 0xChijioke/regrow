@@ -61,8 +61,8 @@ const CreatePool = ({profileId}: {profileId: string}) => {
 
   return (
     <div className="flex flex-col gap-y-6 lg:gap-y-8 py-8 lg:py-12 justify-center items-center">
-      <div className="lg:w-[40%] w-[90%] rounded-xl bg-primary p-10">
-        <h2 className="text-center font-semibold mb-5">Create Pool</h2>
+      <div className="lg:w-[40%] w-[90%] rounded-xl bg-primary p-6">
+        <h2 className="text-center text-3xl font-semibold mb-5">Create Pool</h2>
         <form onSubmit={(e) => { e.preventDefault(); createPoolFunc(); }}>
           {/* input fields for pool creation */}
           <label className="flex flex-col mt-4">

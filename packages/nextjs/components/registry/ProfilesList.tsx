@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ProfileCard from "./ProfileCard";
 import { OrderByField, useProfiles } from "~~/contexts/profilesContext";
 import { Profile } from "~~/types/types";
+import { shuffle } from "lodash";
 // import { Spinner } from "../assets/Spinner";
 // import Search from "../Search";
 
@@ -10,7 +11,7 @@ const ProfilesList = () => {
   const PAGE_SIZE = 9;
   const [orderBy, setOrderBy] = useState<OrderByField>(OrderByField.CreatedAt);
   const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('desc');
-  const { profiles, loading, fetchProfiles } = useProfiles();
+  const { profiles, setProfiles, loading, fetchProfiles } = useProfiles();
 
 
   // useEffect(() => {
@@ -31,40 +32,58 @@ const ProfilesList = () => {
     setOrderBy(selectedOrderBy as OrderByField);
   };
 
-  const handleOrderDirectionToggle = () => {
-    // Toggle order direction and trigger a fetch
-    setOrderDirection((prevDirection) => (prevDirection === 'asc' ? 'desc' : 'asc'));
+  const handleOrderDirectionToggle = async () => {
+    // Toggle order direction
+    const newOrderDirection = orderDirection === 'asc' ? 'desc' : 'asc';
+    setOrderDirection(newOrderDirection);
+    
+    // Fetch profiles with the new sorting criteria
+    await fetchProfiles(PAGE_SIZE, 0, orderBy, newOrderDirection);
   };
+
+
+  const handleShuffle = () => {
+    // Shuffle the profiles array and update the state
+    setProfiles((prevProfiles) => shuffle(prevProfiles));
+  };
+  
 
 
   return (
     <div>
-
+      
       {profiles.length > 0 && 
-      <div className="flex-row flex justify-end items-center gap-x-4">
-        {/* <Search /> */}
-        <div>
-          <select className="select select-bordered w-full max-w-xs" onChange={(e) => handleOrderByChange(e.target.value)}>
-            <option value="createdAt">Created At</option>
-            <option value="id">ID</option>
-            <option value="name">Name</option>
-            <option value="owner">Owner</option>
-            <option value="nonce">Nonce</option>
-            <option value="anchor">Anchor</option>
-            <option value="createdAt">Created At</option>
-            <option value="updatedAt">Updated At</option>
-          </select>
+        <div className="flex-row flex justify-end items-center gap-x-4">
+          {/* <Search /> */}
+          <div>
+            <select className="select select-bordered w-full max-w-xs" onChange={(e) => handleOrderByChange(e.target.value)}>
+              <option value="createdAt">Created At</option>
+              <option value="id">ID</option>
+              <option value="name">Name</option>
+              <option value="owner">Owner</option>
+              <option value="nonce">Nonce</option>
+              <option value="anchor">Anchor</option>
+              <option value="createdAt">Created At</option>
+              <option value="updatedAt">Updated At</option>
+            </select>
+          </div>
+          
+          <div>
+            <button onClick={handleOrderDirectionToggle}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+              </svg>
+            </button>
+          </div>
+          
+          <div>
+            <button onClick={handleShuffle}>
+              Shuffle
+            </button>
+          </div>
+
         </div>
-        
-        <div>
-          <button onClick={handleOrderDirectionToggle}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
-            </svg>
-          </button>
-        </div>
-      </div>
-}
+      }
 
       <div className="p-5 lg:grid lg:grid-cols-3">
         {profiles.length === 0 && loading ? (

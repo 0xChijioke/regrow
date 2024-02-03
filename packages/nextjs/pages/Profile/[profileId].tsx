@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react'; 
-import { Profile, ProfileDetail } from '~~/types/types';
-import { useProfiles } from '~~/contexts/profilesContext';
-import { IPFSClient, fetchProfileById } from '~~/utils/request';
+import { ProfileDetail } from '~~/types/types';
+import { fetchProfileById } from '~~/utils/request';
 import { Address } from '~~/components/scaffold-eth';
 import { MetaHeader } from '~~/components/MetaHeader';
 import { useQuery } from 'react-query';
