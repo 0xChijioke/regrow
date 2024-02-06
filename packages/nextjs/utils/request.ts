@@ -2,12 +2,29 @@
 import { GraphQLClient } from "graphql-request";
 import { getProfileById, getProfilesQuery, searchProfilesQuery } from './query';
 import { getIPFSClient } from "~~/services/ipfs";
+import PinataSDK from "@pinata/sdk";
+
+const PINATA_API = process.env.NEXT_PUBLIC_PINATA_API_KEY
+const PINATA_SECRET = process.env.NEXT_PUBLIC_PINATA_API_SECRET
 
 
+export const pinata = new PinataSDK({ pinataApiKey: PINATA_API, pinataSecretApiKey: PINATA_SECRET });
 
 const graphqlEndpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL || ''; 
 const client = new GraphQLClient(graphqlEndpoint);
 export const IPFSClient = getIPFSClient();
+
+
+
+// pinata.testAuthentication().then((result) => {
+//   //handle successful authentication here
+//   console.log(result);
+// }).catch((err) => {
+//   //handle error here
+//   console.log(err);
+// });
+
+
 
 
 export const fetchProfilesQuery = async (first: number, skip?: number, orderBy?: string, orderDirection?: string) => {

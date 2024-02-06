@@ -3,6 +3,13 @@ import { MetaHeader } from "~~/components/MetaHeader";
 import Hero from "~~/components/homepage/Hero";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 
+const API = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || "oKxs-03sij-U_N0iOlrSsZFr29-IqbuF";
+const RPC = `https://eth-goerli.g.alchemy.com/v2/${API}`;
+
+
+
+
+
 
 const Home: NextPage = () => {
 

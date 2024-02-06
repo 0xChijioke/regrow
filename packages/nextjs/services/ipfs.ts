@@ -67,7 +67,7 @@ export default class IPFSClient {
         pinataMetadata: {
           name,
           keyvalues: {
-            app: "allo-starter-kit",
+            app: "regrow",
           },
         },
       };
@@ -83,7 +83,7 @@ export default class IPFSClient {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${this.jwt}`,
+          'Authorization': `Bearer ${this.jwt}`,
         },
         body: JSON.stringify(data),
       });
@@ -104,7 +104,7 @@ export default class IPFSClient {
       const resp = await fetch(this.pinFileToIPFSUrl, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${this.jwt}`,
+          'Authorization': `Bearer ${this.jwt}`,
         },
         body: fd,
       });

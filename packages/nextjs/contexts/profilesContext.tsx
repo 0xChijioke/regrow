@@ -55,7 +55,6 @@ export const ProfilesProvider: React.FC<{ children: ReactNode }> = ({ children }
     try {
       const data: any = await fetchProfilesQuery(pageSize, skip, orderBy, orderDirection);
       // Combine existing profiles with new ones and filter duplicates
-      console.log('...');
       setProfiles((prevProfiles) => [
         ...prevProfiles,
         ...data.profiles,
