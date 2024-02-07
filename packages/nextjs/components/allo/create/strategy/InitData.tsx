@@ -48,11 +48,11 @@ const InitData: React.FC<InitDataProps> = ({ strategyAddress, strategyName, onIn
 
     const handleInitDataSubmit = async () => {
       // Validate initData
-      console.log(initData)
+      // console.log(initData)
 
       // Fetch initialization data
       const fetchedInitData = await strategy.getInitializeData(initData);
-        console.log("Fetched Initialization Data:", fetchedInitData);
+        // console.log("Fetched Initialization Data:", fetchedInitData);
       
         onInitDataSubmit(fetchedInitData);
         setIsInitDataFetched(true);
@@ -68,8 +68,8 @@ const InitData: React.FC<InitDataProps> = ({ strategyAddress, strategyName, onIn
         allocationStartTimeInSeconds = moment(date).unix(); // Convert moment object to seconds
       }
       setInitData({ ...initData, allocationStartTime: BigInt(allocationStartTimeInSeconds) });
-      console.log(allocationStartTimeInSeconds)
-      console.log("Start", new Date(allocationStartTimeInSeconds * 1000)); // Multiply by 1000 to convert to milliseconds
+      // console.log(allocationStartTimeInSeconds)
+      // console.log("Start", new Date(allocationStartTimeInSeconds * 1000)); // Multiply by 1000 to convert to milliseconds
     };
 
     const handleAllocationEndTimeChange = (date: Moment | string) => {
@@ -82,8 +82,8 @@ const InitData: React.FC<InitDataProps> = ({ strategyAddress, strategyName, onIn
         allocationEndTimeInSeconds = moment(date).unix(); // Convert moment object to seconds
       }
       setInitData({ ...initData, allocationEndTime: BigInt(allocationEndTimeInSeconds) });
-      console.log(allocationEndTimeInSeconds)
-      console.log("End", new Date(allocationEndTimeInSeconds * 1000)); // Multiply by 1000 to convert to milliseconds
+      // console.log(allocationEndTimeInSeconds)
+      // console.log("End", new Date(allocationEndTimeInSeconds * 1000)); // Multiply by 1000 to convert to milliseconds
   };
   
    

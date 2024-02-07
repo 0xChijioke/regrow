@@ -126,12 +126,13 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
     
     const handleCreatePool = async () => {
     const walletClient = await getWalletClient();
-    console.log("Creating pool with data:", poolData);
+    // console.log("Creating pool with data:", poolData);
     
 
-    console.log(walletClient)
+    // console.log(walletClient)
     try {
-      await createPoolWrite();
+      const res = await createPoolWrite();
+      console.log(res)
       // Additional logic after successful pool creation
     } catch (error) {
       console.error('Error creating pool:', error);
@@ -141,7 +142,7 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
   
   };
 
-  console.log("pool data", poolData)
+  // console.log("pool data", poolData)
 
   return (
     <div className="p-6">
