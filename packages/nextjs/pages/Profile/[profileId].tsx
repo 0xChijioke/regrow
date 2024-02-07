@@ -115,7 +115,7 @@ const ProfileDetail = () => {
               <div className='w-fit flex-col lg:p-10'>
 
                 <p className='text-left'>
-                  Revolutionizing the lending landscape, our blockchain-powered refinancing initiative brings transparency, security, and efficiency to the mortgage market. Leveraging smart contracts, we automate and optimize the refinance process, slashing costs and minimizing intermediaries. By decentralizing data, we ensure privacy and integrity, offering homeowners a seamless and trustless experience. Join us in reshaping the future of mortgage refinancing, where blockchain technology paves the way for faster, cost-effective, and secure transactions in the real estate ecosystem.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis sapien in risus facilisis blandit. Nulla facilisi. Sed vestibulum laoreet lacus, eget venenatis ex fermentum vel. Curabitur ultricies, ligula id consequat luctus, elit urna bibendum arcu, et sodales tortor leo sit amet nulla. Integer scelerisque imperdiet est, id fringilla justo congue eget. Maecenas eu facilisis purus. Vivamus tincidunt eros a erat tincidunt, sit amet semper libero auctor.
                 </p>
                 <div className="w-full items-start">
                   <div className='text-left flex-col text-sm'>
@@ -172,7 +172,7 @@ const ProfileDetail = () => {
             </div>
 
           <div className='w-full justify-center mt-2 items-center text-center bg-base-300 rounded-xl p-3'>
-            Analyisis & Evalation comming soon...
+            Analyisis & Evalation...
           </div>
           {/* Display other profile details */}
         </div>
