@@ -4069,6 +4069,7 @@ __metadata:
     graphql: ^16.8.1
     graphql-request: ^6.1.0
     lodash: ^4.17.21
+    moment: ^2.30.1
     next: ^13.1.6
     nextjs-progressbar: ^0.0.16
     postcss: ^8.4.16
@@ -4077,6 +4078,7 @@ __metadata:
     react: ^18.2.0
     react-autosuggest: ^10.1.0
     react-copy-to-clipboard: ^5.1.0
+    react-datetime: ^3.2.0
     react-dom: ^18.2.0
     react-hot-toast: ^2.4.0
     react-query: ^3.39.3
@@ -13795,6 +13797,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moment@npm:^2.30.1":
+  version: 2.30.1
+  resolution: "moment@npm:2.30.1"
+  checksum: 859236bab1e88c3e5802afcf797fc801acdbd0ee509d34ea3df6eea21eb6bcc2abd4ae4e4e64aa7c986aa6cba563c6e62806218e6412a765010712e5fa121ba6
+  languageName: node
+  linkType: hard
+
 "motion@npm:10.16.2":
   version: 10.16.2
   resolution: "motion@npm:10.16.2"
@@ -15276,7 +15285,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.5.7, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -15553,6 +15562,18 @@ __metadata:
   peerDependencies:
     react: ^15.3.0 || 16 || 17 || 18
   checksum: f00a4551b9b63c944a041a6ab46af5ef20ba1106b3bc25173e7ef9bffbfba17a613368682ab8820cfe8d4b3acc5335cd9ce20229145bcc1e6aa8d1db04c512e5
+  languageName: node
+  linkType: hard
+
+"react-datetime@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "react-datetime@npm:3.2.0"
+  dependencies:
+    prop-types: ^15.5.7
+  peerDependencies:
+    moment: ^2.16.0
+    react: ^16.5.0 || ^17.0.0 || ^18.0.0
+  checksum: c3407beb64f44cd5944252bee1c4565fc138e3f1e81d8e4fd00d2aeac564a18848ee9af5f51fbbb39bba588f8c2d659570384af1ce8378d4e0049a6bdb083655
   languageName: node
   linkType: hard
 

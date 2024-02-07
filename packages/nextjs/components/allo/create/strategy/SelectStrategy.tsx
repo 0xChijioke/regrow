@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { deployStrategy } from "./deployStrategy";
 import { InitializeParams } from "@allo-team/allo-v2-sdk/dist/types";
-import { useConfig } from "wagmi";
+import { useAccount, useConfig, usePublicClient } from "wagmi";
 import { AddressInput, BytesInput } from "~~/components/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
+import { TxnNotification } from "../CreatePoolContainer";
 
 interface SelectStrategyProps {
   strategyName: string;
@@ -12,6 +13,8 @@ interface SelectStrategyProps {
   onStrategySelect: (name: string, address: string) => void;
   onNextStep: () => void;
 }
+
+
 
 const SelectStrategy: React.FC<SelectStrategyProps> = ({
   strategyName,
@@ -24,6 +27,12 @@ const SelectStrategy: React.FC<SelectStrategyProps> = ({
   const { id: chainIdConfig, rpcUrls } = chains?.[0] || {};
   const rpcConfig = rpcUrls?.default?.http?.[0];
   // console.log(chainIdConfig, rpcConfig)
+
+  
+  const { address } = useAccount();
+  
+  const publicClient = usePublicClient();
+
   const [deploymentStatus, setDeploymentStatus] = useState<string | null>(null);
   const [deployedAddress, setDeployedAddress] = useState<string>("");
   const [strategyType, setStrategyType] = useState<"custom" | "cloneable" | "existing">("custom");
@@ -33,24 +42,42 @@ const SelectStrategy: React.FC<SelectStrategyProps> = ({
   };
 
   const handleMicroGrantsDeploy = async () => {
-    notification.info("Deployment started.");
+    let notificationId = null;
   
     try {
-      const address = await deployStrategy("MicroGrantsv1", rpcConfig, chainIdConfig);
-      console.log(address);
-      notification.success("Deployment successful!", { duration: 5 });
+      notificationId = notification.loading(<TxnNotification message="Awaiting strategy deployment." />);
       
-      setDeploymentStatus("success");
-      setDeployedAddress(address);
-      
-      onStrategySelect("MicroGrants", address);
-      onNextStep();
+      // Ensure address is truthy
+      if (address) {
+        const deployment = await deployStrategy("MicroGrantsv1", rpcConfig, chainIdConfig, address, publicClient);
+        
+        if (deployment && deployment.deployedStrategyAddress) {
+          notification.success("Deployment successful!");
+          setDeploymentStatus("success");
+          setDeployedAddress(deployment.deployedStrategyAddress);
+  
+          onStrategySelect("MicroGrants", deployment.deployedStrategyAddress);
+          // Add a timeout before moving to the next step
+          setTimeout(() => {
+            onNextStep();
+          }, 2000); // 2000 milliseconds
+        } else {
+          notification.error("Deployment failed. Please try again.");
+          setDeploymentStatus("error");
+        }
+      }
     } catch (err) {
       console.error("Error deploying strategy", err);
-      notification.error("Deployment failed. Please try again.", { duration: 5 });
+      notification.error("Deployment failed. Check console and try again.", { duration: 5 });
       setDeploymentStatus("error");
+    } finally {
+      if (notificationId) {
+        notification.remove(notificationId);
+      }
     }
   };
+  
+
   
 
   return (

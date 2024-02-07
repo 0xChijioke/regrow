@@ -1,18 +1,20 @@
 import { MicroGrantsStrategy } from "@allo-team/allo-v2-sdk";
 import { getWalletClient, waitForTransaction } from "@wagmi/core";
-import { usePublicClient, useAccount, useBalance } from "wagmi";
-import { useAccountBalance } from "~~/hooks/scaffold-eth";
+import { notification } from "~~/utils/scaffold-eth";
+import { TxnNotification } from "../CreatePoolContainer";
 
 // Strategy factory function
-export const deployStrategy = async (strategyType: string, rpcConfig: string | undefined, chainIdConfig: number | undefined) => {
-  const { address } = useAccount();
-  
-  const value = data.value
-  //    ^? const value: bigint
-  
-  const publicClient = usePublicClient();
+export const deployStrategy = async(
+  strategyType: string,
+  rpcConfig: string | undefined,
+  chainIdConfig: number | undefined,
+  address: string,
+  publicClient: any
+) => {
   const walletClient = await getWalletClient({ chainId: chainIdConfig });
   let strategyAddress;
+  
+  let notificationId = null; 
   
   
   try {
@@ -31,24 +33,25 @@ export const deployStrategy = async (strategyType: string, rpcConfig: string | u
         }
         console.log("Strategy", strategy)
         
-        const deployParams = strategy.getDeployParams(`${strategyType}`);
-        console.log("deployParams", deployParams)
-        
-    
-        const { balance } = useAccountBalance(address)
-        
+    const deployParams = strategy.getDeployParams(`${strategyType}`);
+    console.log("deployParams", deployParams)
+
 
     const estimateGas = address && await publicClient.estimateGas({
-      to: '0x',
       data: deployParams.bytecode as `0x${string}`,
       account: address
     });
-    console.log("Estimated Gas", estimateGas);
+    console.log("Estimated Gas", Number(estimateGas));
+
+    // Display loading notification before deployment
+    // notificationId = notification.loading(<TxnNotification message={`Deploying ${strategyType} Strategy`} />);
+
 
     const hash = await walletClient!.deployContract({
       abi: deployParams.abi,
       bytecode: deployParams.bytecode as `0x${string}`,
       args: [],
+      gas: BigInt(2147273),
       
     });
     console.log("hash", hash)
@@ -59,7 +62,7 @@ export const deployStrategy = async (strategyType: string, rpcConfig: string | u
     });
     console.log("result", result)
 
-    strategyAddress = result.contractAddress!;
+    return { deployedStrategyAddress: result.contractAddress!, estimateGas };
   } catch (e) {
     console.error(`Deploying ${strategyType} Strategy`, e);
   }

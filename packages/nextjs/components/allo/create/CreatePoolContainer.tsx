@@ -3,6 +3,24 @@ import CreatePoolSteps from "./CreatePoolSteps";
 import SelectStrategy from "./strategy/SelectStrategy";
 import InitData from "./strategy/InitData";
 
+
+/**
+ * Custom notification content for TXs.
+ */
+export const TxnNotification = ({ message, blockExplorerLink }: { message: string; blockExplorerLink?: string }) => {
+  return (
+    <div className={`flex flex-col ml-1 cursor-default`}>
+      <p className="my-0">{message}</p>
+      {blockExplorerLink && blockExplorerLink.length > 0 ? (
+        <a href={blockExplorerLink} target="_blank" rel="noreferrer" className="block link text-md">
+          check out transaction
+        </a>
+      ) : null}
+    </div>
+  );
+};
+
+
 const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
     
     const [strategyName, setStrategyName] = useState<string>("");
@@ -42,8 +60,8 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
             onNextStep={handleNextStep}
           />
         )}
-        {currentStep === "2" && (
-          <InitData strategyAddress={strategyAddress} onInitDataSubmit={handleInitData} onNextStep={handleNextStep} />
+        {currentStep === "2" && strategyAddress && (
+          <InitData strategyAddress={strategyAddress} strategyName={strategyName} onInitDataSubmit={handleInitData} onNextStep={handleNextStep} />
         )}
       </div>
     </div>

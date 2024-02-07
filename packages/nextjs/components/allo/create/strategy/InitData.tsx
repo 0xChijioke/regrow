@@ -1,14 +1,16 @@
 import { InitializeParams } from "@allo-team/allo-v2-sdk/dist/types";
 import React, { useState } from "react";
 import { Address, BytesInput } from "~~/components/scaffold-eth";
+import Datetime from "react-datetime";
 
 interface InitDataProps {
     strategyAddress: string;
+    strategyName: string;
     onInitDataSubmit: (initData: any) => void;
     onNextStep: () => void;
 }
 
-const InitData: React.FC<InitDataProps> = ({strategyAddress, onInitDataSubmit, onNextStep }) => {
+const InitData: React.FC<InitDataProps> = ({strategyAddress, strategyName, onInitDataSubmit, onNextStep }) => {
     const [initData, setInitData] = useState<InitializeParams>({
         useRegistryAnchor: true,
         allocationStartTime: BigInt(0),
@@ -28,27 +30,31 @@ const InitData: React.FC<InitDataProps> = ({strategyAddress, onInitDataSubmit, o
         onNextStep();
     };
     
-    console.log(strategyAddress)
 
   return (
     <div className="space-y-5 w-fit">
       <h2 className="text-center lg:pt-3 text-2xl uppercase">Set Initialization Data</h2>
 
       {/*  */}
-      <div>
-        <p>Strategy deployed successfully at address <Address address={strategyAddress} /></p>
+      <div className="text-center">
+        <div className="flex font-light whitespace-nowrap">{strategyName} strategy deployed successfully at address
+          <div className="pl-2 flex">
+            <Address address={strategyAddress} />
+          </div>
+        </div>
       </div>
 
       {/* initialization data */}
       <div>
         <label>
-          Allocation Start Time:
-          <input
-            type="text"
-            value={initData.allocationStartTime.toString()}
-            onChange={(e) => setInitData({ ...initData, allocationStartTime: BigInt(e.target.value) })}
-          />
-        </label>
+            Allocation Start Time:
+            <Datetime
+              value={new Date(Number(initData.allocationStartTime))}
+              onChange={(date) =>
+                setInitData({ ...initData, allocationStartTime: BigInt(date.getTime()) })
+              }
+            />
+          </label>
       </div>
       <div>
         <label>
