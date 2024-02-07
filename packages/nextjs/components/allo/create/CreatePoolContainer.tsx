@@ -2,6 +2,11 @@ import { useState } from "react";
 import CreatePoolSteps from "./CreatePoolSteps";
 import SelectStrategy from "./strategy/SelectStrategy";
 import InitData from "./strategy/InitData";
+import CreatePool from "./CreatePool";
+import { CreatePoolArgs, InitializeParams } from "@allo-team/allo-v2-sdk/dist/types";
+
+
+
 
 
 /**
@@ -23,28 +28,71 @@ export const TxnNotification = ({ message, blockExplorerLink }: { message: strin
 
 const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
     
-    const [strategyName, setStrategyName] = useState<string>("");
-    const [strategyAddress, setStrategyAddress] = useState<string>("");
-    const [strategyDeployStatus, setStrategyDeployStatus] = useState<string>("");
-    const [strategyInitData, setStrategyInitData] = useState<any>({});
-    const [currentStep, setCurrentStep] = useState<string>("1");
-    const [completedSteps, setCompletedSteps] = useState<string[]>([]);
+  const [strategyName, setStrategyName] = useState<string>("");
+  const [currentStep, setCurrentStep] = useState<string>("1");
+  const [completedSteps, setCompletedSteps] = useState<string[]>([]);
+  const [poolName, setPoolName] = useState<string>("");
+  const [poolData, setPoolData] = useState<CreatePoolArgs>({
+    profileId: profileId,
+    strategy: "",
+    initStrategyData: "",
+    token: '',
+    amount: BigInt(0),
+    metadata: {
+      protocol: BigInt(1),
+      pointer: '', // placeholder
+    },
+    managers: [],
+  });
 
-    const handleStrategySelect = (name: string, address: string) => {
-        setStrategyName(name);
-        setStrategyAddress(address);
+    
+  
+  
+  
+  
+  
+  
+  const handleStrategySelect = (name: string, address: string) => {
+    setStrategyName(name);
+    setPoolData((prevData) => ({ ...prevData, strategy: address }));   
       
     };
 
 
-    const handleInitData = (initData: any) => {
-        setStrategyInitData(initData);
-      };
+  const handleInitData = (initData: any) => {
+    setPoolData((prevData) => ({ ...prevData, initStrategyData: initData }));
+  };
 
-    const handleNextStep = () => {
-        setCompletedSteps([...completedSteps, currentStep]);
-        setCurrentStep(String(parseInt(currentStep) + 1));
-    };
+
+  const handlePoolDataInput = (name: string, token: string, amount: bigint, managers: string[]) => {
+    // Pool name and other field will be used to set ipfs metadata here
+    setPoolName(name);
+
+
+    setPoolData((prevData) => ({
+      ...prevData,
+      token: token,
+      amount: amount,
+      managers: managers,
+    }));
+
+    handleNextStep();
+  };
+  
+
+  const handleNextStep = () => {
+      setCompletedSteps([...completedSteps, currentStep]);
+      setCurrentStep(String(parseInt(currentStep) + 1));
+  };
+
+
+  const handleCreatePool = () => {
+    console.log("Creating pool with data:", poolData);
+
+
+  };
+
+  console.log("pool data", poolData)
 
   return (
     <div className="p-6">
@@ -54,14 +102,25 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
         {currentStep === "1" && (
           <SelectStrategy
             strategyName={strategyName}
-            strategyAddress={strategyAddress}
-            strategyInitData={strategyInitData}
+            strategyAddress={poolData.strategy}
+            strategyInitData={poolData.initStrategyData}
             onStrategySelect={handleStrategySelect}
             onNextStep={handleNextStep}
           />
         )}
-        {currentStep === "2" && strategyAddress && (
-          <InitData strategyAddress={strategyAddress} strategyName={strategyName} onInitDataSubmit={handleInitData} onNextStep={handleNextStep} />
+        {currentStep === "2" && poolData.strategy && (
+          <InitData
+            strategyAddress={poolData.strategy}
+            strategyName={strategyName}
+            onInitDataSubmit={handleInitData}
+            handlePoolDataInput={handlePoolDataInput}
+            onNextStep={handleNextStep} />
+        )}
+        {currentStep === "3" && poolData.initStrategyData && (
+          <CreatePool
+            poolData={poolData}
+            name={poolName}
+            onCreatePool={handleCreatePool} />
         )}
       </div>
     </div>

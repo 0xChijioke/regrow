@@ -29,8 +29,7 @@ const SelectStrategy: React.FC<SelectStrategyProps> = ({
   // console.log(chainIdConfig, rpcConfig)
 
   
-  const { address } = useAccount();
-  
+  const { address } = useAccount(); 
   const publicClient = usePublicClient();
 
   const [deploymentStatus, setDeploymentStatus] = useState<string | null>(null);
@@ -60,7 +59,7 @@ const SelectStrategy: React.FC<SelectStrategyProps> = ({
           // Add a timeout before moving to the next step
           setTimeout(() => {
             onNextStep();
-          }, 2000); // 2000 milliseconds
+          }, 200); // 200 milliseconds
         } else {
           notification.error("Deployment failed. Please try again.");
           setDeploymentStatus("error");
@@ -111,11 +110,6 @@ const SelectStrategy: React.FC<SelectStrategyProps> = ({
 
       {strategyType === "custom" && (
         <div className="flex justify-center">
-          {deploymentStatus === "success" && (
-            <div>
-              <p>Strategy deployed successfully at address {deployedAddress}</p>
-            </div>
-          )}
 
           {deploymentStatus !== "success" && (
             <button className="btn rounded-lg btn-secondary" onClick={handleMicroGrantsDeploy}>

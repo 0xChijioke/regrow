@@ -1,35 +1,110 @@
 import { InitializeParams } from "@allo-team/allo-v2-sdk/dist/types";
 import React, { useState } from "react";
-import { Address, BytesInput } from "~~/components/scaffold-eth";
+import { Address, AddressInput, BytesInput, InputBase } from "~~/components/scaffold-eth";
 import Datetime from "react-datetime";
+import moment, { Moment } from "moment";
+import { useConfig } from "wagmi";
+import { MicroGrantsStrategy } from "@allo-team/allo-v2-sdk";
+import { debounce } from "lodash";
+import { formatEther, parseEther } from "viem";
 
+const NATIVE = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 interface InitDataProps {
-    strategyAddress: string;
-    strategyName: string;
-    onInitDataSubmit: (initData: any) => void;
-    onNextStep: () => void;
+  strategyAddress: string;
+  strategyName: string;
+  onInitDataSubmit: (initData: any) => void;
+  handlePoolDataInput: (name: string, token: string, amount: bigint, managers: string[]) => void;
+  onNextStep: () => void;
 }
 
-const InitData: React.FC<InitDataProps> = ({strategyAddress, strategyName, onInitDataSubmit, onNextStep }) => {
+const InitData: React.FC<InitDataProps> = ({ strategyAddress, strategyName, onInitDataSubmit, handlePoolDataInput, onNextStep }) => {
+    const { chains } = useConfig();
+    const { id: chainIdConfig, rpcUrls } = chains?.[0] || {};
+    const rpcConfig = rpcUrls?.default?.http?.[0];
+  // console.log(chainIdConfig, rpcConfig)
+  
+
+    const [isInitDataFetched, setIsInitDataFetched] = useState(false);
+    const [name, setName] = useState('');
+    const [token, setToken] = useState(NATIVE);
+    const [amount, setAmount] = useState<bigint>(BigInt(0));
+    const [managers, setManagers] = useState<string[]>([]);
     const [initData, setInitData] = useState<InitializeParams>({
         useRegistryAnchor: true,
         allocationStartTime: BigInt(0),
         allocationEndTime: BigInt(0),
         approvalThreshold: BigInt(0),
         maxRequestedAmount: BigInt(0),
-      });
+    });
+
+      
+    const strategy = new MicroGrantsStrategy({
+      chain: Number(chainIdConfig),
+      rpc: rpcConfig,
+    });
+    
+  
     
 
-    const handleInitDataSubmit = () => {
+    const handleInitDataSubmit = async () => {
       // Validate initData
-    
+      console.log(initData)
+
+      // Fetch initialization data
+      const fetchedInitData = await strategy.getInitializeData(initData);
+        console.log("Fetched Initialization Data:", fetchedInitData);
       
+        onInitDataSubmit(fetchedInitData);
+        setIsInitDataFetched(true);
+      };
     
-      
-        onInitDataSubmit(initData);
-        onNextStep();
+    const handleAllocationStartTimeChange = (date: Moment | string) => {
+      // console.log(date)
+      let allocationStartTimeInSeconds: number;
+
+      if (typeof date === 'string') {
+        allocationStartTimeInSeconds = Date.parse(date) / 1000; // Convert milliseconds to seconds
+      } else {
+        allocationStartTimeInSeconds = moment(date).unix(); // Convert moment object to seconds
+      }
+      setInitData({ ...initData, allocationStartTime: BigInt(allocationStartTimeInSeconds) });
+      console.log(allocationStartTimeInSeconds)
+      console.log("Start", new Date(allocationStartTimeInSeconds * 1000)); // Multiply by 1000 to convert to milliseconds
     };
+
+    const handleAllocationEndTimeChange = (date: Moment | string) => {
+      // console.log(date)
+      let allocationEndTimeInSeconds: number;
+
+      if (typeof date === 'string') {
+        allocationEndTimeInSeconds = Date.parse(date) / 1000; // Convert milliseconds to seconds
+      } else {
+        allocationEndTimeInSeconds = moment(date).unix(); // Convert moment object to seconds
+      }
+      setInitData({ ...initData, allocationEndTime: BigInt(allocationEndTimeInSeconds) });
+      console.log(allocationEndTimeInSeconds)
+      console.log("End", new Date(allocationEndTimeInSeconds * 1000)); // Multiply by 1000 to convert to milliseconds
+  };
+  
+   
+  // Debounce the amount input field
+  const debouncedSetAmount = debounce((value: string) => {
+    setAmount(parseEther(value));
+  }, 500);
+
+
+  const handleAddManager = () => {
+    setManagers([...managers, '']);
+  };
+
+  const handleManagerChange = (index: number, value: string) => {
+    const updatedManagers = [...managers];
+    updatedManagers[index] = value;
+    setManagers(updatedManagers);
+  };
+
     
+  // console.log(initData)
 
   return (
     <div className="space-y-5 w-fit">
@@ -44,50 +119,113 @@ const InitData: React.FC<InitDataProps> = ({strategyAddress, strategyName, onIni
         </div>
       </div>
 
-      {/* initialization data */}
-      <div>
-        <label>
-            Allocation Start Time:
-            <Datetime
-              value={new Date(Number(initData.allocationStartTime))}
-              onChange={(date) =>
-                setInitData({ ...initData, allocationStartTime: BigInt(date.getTime()) })
-              }
+      {/* Render initialization data section if it hasn't been fetched */}
+      {!isInitDataFetched && (
+        <>
+          <div className="flex flex-col lg:flex-row justify-evenly">
+            <div>
+              <label>
+                  Allocation Start Time:
+                <Datetime
+                  className="bg-inherit items-center w-fit"
+                  value={initData.allocationStartTime ? moment.unix(Number(initData.allocationStartTime)) : ''}
+                  onChange={(date) =>handleAllocationStartTimeChange(date)}
+                  />
+                </label>
+            </div>
+            <div>
+              <label>
+                  Allocation End Time:
+                <Datetime
+                  className="bg-inherit"
+                  value={initData.allocationEndTime ? moment.unix(Number(initData.allocationEndTime)) : ''}
+                  onChange={(date) =>handleAllocationEndTimeChange(date)}
+                  />
+              </label>
+            </div>
+          </div>
+          <div>
+            <label>
+              Approval Threshold:
+              <InputBase
+                value={initData.approvalThreshold.toString()}
+                onChange={(e) => setInitData({ ...initData, approvalThreshold: BigInt(e) })}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Max Requested Amount:
+              <InputBase
+                value={initData.maxRequestedAmount.toString()}
+                onChange={(e) => setInitData({ ...initData, maxRequestedAmount: parseEther(e) })}
+              />
+            </label>
+          </div>
+
+          <button
+            className="btn btn-secondary rounded-lg"
+            disabled={!initData.allocationEndTime || !initData.allocationStartTime || !initData.approvalThreshold || !initData.maxRequestedAmount}
+            onClick={handleInitDataSubmit}>Submit Initialization Data
+          </button>
+        </>
+      )}
+
+      {/* Render the rest of the form after init data has been fetched */}
+      {isInitDataFetched && (
+        <div>
+
+          {/* input fields for pool creation */}
+          <label className="flex flex-col mt-4">
+            Pool name:
+            <InputBase
+              value={name}
+              onChange={(e) => setName(e)}
             />
           </label>
-      </div>
-      <div>
-        <label>
-          Allocation End Time:
-          <input
-            type="text"
-            value={initData.allocationEndTime.toString()}
-            onChange={(e) => setInitData({ ...initData, allocationEndTime: BigInt(e.target.value) })}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Approval Threshold:
-          <input
-            type="text"
-            value={initData.approvalThreshold.toString()}
-            onChange={(e) => setInitData({ ...initData, approvalThreshold: BigInt(e.target.value) })}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Max Requested Amount:
-          <input
-            type="text"
-            value={initData.maxRequestedAmount.toString()}
-            onChange={(e) => setInitData({ ...initData, maxRequestedAmount: BigInt(e.target.value) })}
-          />
-        </label>
-      </div>
 
-      <button onClick={handleInitDataSubmit}>Submit Initialization Data</button>
+           <label className="flex flex-col mt-4">
+            Token:
+            <AddressInput
+              value={token}
+              onChange={(e) => setToken(e)}
+              placeholder='Token address'
+            />
+          </label>
+          <label className="flex flex-col mt-4">
+            Amount:
+            <AddressInput
+              value={formatEther(amount)}
+              onChange={(e) => debouncedSetAmount(e)}
+            />
+          </label>
+          
+          <label className="flex flex-col mt-4">
+            Managers:
+            {managers.map((manager, index) => (
+              <div className="my-2" key={index}>
+                <AddressInput
+                  value={manager}
+                  onChange={(value) => handleManagerChange(index, value)}
+                />
+              </div>
+            ))}
+            <button className="flex justify-end" type="button" onClick={handleAddManager}>
+              Add Manager
+            </button>
+          </label>
+
+          {/* Button to submit */}
+          <div className="flex w-full justify-center">
+            <button
+              className="btn rounded-lg"
+              onClick={() => handlePoolDataInput(name, token, amount, managers)}
+              type="submit" disabled={!name || !token || !amount}>
+              {'Verify and create pool'}
+            </button>
+          </div>                       
+        </div>
+        )}
     </div>
   );
 };
