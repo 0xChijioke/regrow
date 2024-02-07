@@ -59,7 +59,7 @@ const SelectStrategy: React.FC<SelectStrategyProps> = ({
           // Add a timeout before moving to the next step
           setTimeout(() => {
             onNextStep();
-          }, 200); // 200 milliseconds
+          }, 20); // 20 milliseconds
         } else {
           notification.error("Deployment failed. Please try again.");
           setDeploymentStatus("error");

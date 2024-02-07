@@ -1,6 +1,6 @@
 import { InitializeParams } from "@allo-team/allo-v2-sdk/dist/types";
 import React, { useState } from "react";
-import { Address, AddressInput, BytesInput, InputBase } from "~~/components/scaffold-eth";
+import { Address, AddressInput, BytesInput, EtherInput, InputBase } from "~~/components/scaffold-eth";
 import Datetime from "react-datetime";
 import moment, { Moment } from "moment";
 import { useConfig } from "wagmi";
@@ -92,6 +92,17 @@ const InitData: React.FC<InitDataProps> = ({ strategyAddress, strategyName, onIn
     setAmount(parseEther(value));
   }, 500);
 
+  // Debounce the max requested amount input field
+const debouncedSetMaxRequestedAmount = debounce((value: string) => {
+  const parsedValue = parseFloat(value);
+  // Check if the parsed value is a valid number
+  if (!isNaN(parsedValue)) {
+    const stringVal = parsedValue.toString();
+    const maxRequestedAmountBigInt = parseEther(stringVal);
+    setInitData({ ...initData, maxRequestedAmount: maxRequestedAmountBigInt });
+  }
+}, 1000);
+
 
   const handleAddManager = () => {
     setManagers([...managers, '']);
@@ -107,22 +118,22 @@ const InitData: React.FC<InitDataProps> = ({ strategyAddress, strategyName, onIn
   // console.log(initData)
 
   return (
-    <div className="space-y-5 w-fit">
-      <h2 className="text-center lg:pt-3 text-2xl uppercase">Set Initialization Data</h2>
+    <div className="space-y-5 flex flex-col justify-center max-w-screen-sm lg:max-w-screen-lg">
+      <h2 className="text-center lg:pt-3 text-2xl uppercase">{isInitDataFetched ? "Pool variables" : "Set Initialization Data"}</h2>
 
       {/*  */}
-      <div className="text-center">
-        <div className="flex font-light whitespace-nowrap">{strategyName} strategy deployed successfully at address
-          <div className="pl-2 flex">
+      <div className="text-center justify-center items-center flex flex-col">
+        <div className="flex font-light text-sm lg:text-lg lg:whitespace-nowrap">{strategyName} strategy deployed successfully at address
+        </div>
+          <div className="pl-2 justify-center flex w-full">
             <Address address={strategyAddress} />
           </div>
-        </div>
       </div>
 
       {/* Render initialization data section if it hasn't been fetched */}
       {!isInitDataFetched && (
         <>
-          <div className="flex flex-col lg:flex-row justify-evenly">
+          <div className="flex flex-col justify-center items-center lg:flex-row lg:justify-evenly">
             <div>
               <label>
                   Allocation Start Time:
@@ -156,9 +167,9 @@ const InitData: React.FC<InitDataProps> = ({ strategyAddress, strategyName, onIn
           <div>
             <label>
               Max Requested Amount:
-              <InputBase
-                value={initData.maxRequestedAmount.toString()}
-                onChange={(e) => setInitData({ ...initData, maxRequestedAmount: parseEther(e) })}
+              <EtherInput
+                value={formatEther(initData.maxRequestedAmount)}
+                onChange={(e) => debouncedSetMaxRequestedAmount(e)}
               />
             </label>
           </div>
@@ -173,7 +184,7 @@ const InitData: React.FC<InitDataProps> = ({ strategyAddress, strategyName, onIn
 
       {/* Render the rest of the form after init data has been fetched */}
       {isInitDataFetched && (
-        <div>
+        <div className="flex flex-col space-y-3 item justify-center mx-auto w-fit">
 
           {/* input fields for pool creation */}
           <label className="flex flex-col mt-4">
@@ -194,7 +205,7 @@ const InitData: React.FC<InitDataProps> = ({ strategyAddress, strategyName, onIn
           </label>
           <label className="flex flex-col mt-4">
             Amount:
-            <AddressInput
+            <EtherInput
               value={formatEther(amount)}
               onChange={(e) => debouncedSetAmount(e)}
             />

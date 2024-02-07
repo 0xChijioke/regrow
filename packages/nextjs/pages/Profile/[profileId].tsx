@@ -31,13 +31,13 @@ const ProfileDetail = () => {
   const { data: pendingOwner } = useScaffoldContractRead({
     contractName: "Registry",
     functionName: "profileIdToPendingOwner",
-    args: [profileId],
+    args: [profileId  as `0x${string}`],
   });
   // Check if address is an owner or member of profile
   const { data: isOwnerOrMember } = useScaffoldContractRead({
     contractName: "Registry",
     functionName: "isOwnerOrMemberOfProfile",
-    args: [profileId, address],
+    args: [profileId as `0x${string}`, address],
   });
 
 

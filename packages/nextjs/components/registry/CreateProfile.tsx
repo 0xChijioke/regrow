@@ -92,33 +92,33 @@ const CreateProfile = () => {
 
 
     // Upload image to IPFS
-    let imageCID = '';
-      if (profileImage) {
-        try {
-          const imageBlob = new Blob([profileImage], { type: profileImage.type });
+    // let imageCID = '';
+    //   if (profileImage) {
+    //     try {
+    //       const imageBlob = new Blob([profileImage], { type: profileImage.type });
           
-          imageCID = await IPFSClient.pinFile(imageBlob);
-          console.log(imageCID)
-        } catch (error) {
-          console.error('Error uploading image to IPFS:', error);
-          toast.error('Error uploading image. Please try again.');
-          return;
-        }
-      }
+    //       imageCID = await IPFSClient.pinFile(imageBlob);
+    //       console.log(imageCID)
+    //     } catch (error) {
+    //       console.error('Error uploading image to IPFS:', error);
+    //       toast.error('Error uploading image. Please try again.');
+    //       return;
+    //     }
+    //   }
 
-      // Upload metadata to IPFS
-    try {
-      const metadataCID = await pinata.pinJSONToIPFS({
-        name,
-        description,
-        profileImage: imageCID.IpfsHash,
-      });
-      setMetadata({protocol: BigInt('1'), pointer: metadataCID.IpfsHash});
-    } catch (error) {
-      console.error('Error uploading metadata to IPFS:', error);
-      toast.error('Error creating profile. Please try again.');
-      return;
-    }
+    //   // Upload metadata to IPFS
+    // try {
+    //   const metadataCID = await pinata.pinJSONToIPFS({
+    //     name,
+    //     description,
+    //     profileImage: imageCID,
+    //   });
+    //   setMetadata({protocol: BigInt('1'), pointer: metadataCID.IpfsHash});
+    // } catch (error) {
+    //   console.error('Error uploading metadata to IPFS:', error);
+    //   toast.error('Error creating profile. Please try again.');
+    //   return;
+    // }
     
     
     
@@ -140,7 +140,7 @@ const CreateProfile = () => {
         throw new Error("Invalid parameters.");
       } 
       
-      // const profileId = await createProfileWrite();
+      const profileId = await createProfileWrite();
 
 
       // Why is the returned Id not valid?
