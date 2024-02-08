@@ -63,7 +63,7 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
   }, [profileId]);
   
   const { writeAsync: createPoolWrite, isLoading: isCreatingPool, isMining } = useScaffoldContractWrite({
-    contractName: 'Allo',
+    contractName: 'ALLOPROXY',
     functionName: 'createPoolWithCustomStrategy',
     args: [
       poolData.profileId as `0x${string}`,

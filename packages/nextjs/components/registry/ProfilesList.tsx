@@ -14,12 +14,6 @@ const ProfilesList = () => {
   const { profiles, setProfiles, loading, fetchProfiles } = useProfiles();
 
 
-  // useEffect(() => {
-  //   // Fetch profiles when orderBy or orderDirection changes
-  //   fetchProfiles(PAGE_SIZE, 0, orderBy, orderDirection);
-  //   // console.log("triggerd")
-  // }, [orderBy, orderDirection]);
-
 
   const handleLoadMore = () => {
     // Fetch more profiles when "Load More" is clicked

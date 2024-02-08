@@ -49,7 +49,7 @@ export const ProfilesProvider: React.FC<{ children: ReactNode }> = ({ children }
   
   const fetchProfiles = async (pageSize: number, skip: number, orderBy?: string, orderDirection?: string) => {
     
-    console.log('Fetching profiles...');
+    // console.log('Fetching profiles...');
     
     setLoading(true);
     try {

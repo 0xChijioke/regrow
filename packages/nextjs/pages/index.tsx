@@ -13,10 +13,10 @@ const RPC = `https://eth-goerli.g.alchemy.com/v2/${API}`;
 
 const Home: NextPage = () => {
 
-  // const { data: deployedAllo } = useDeployedContractInfo("Allo");
+  // const { data: deployedAllo } = useDeployedContractInfo("ALLOPROXY");
   // console.log(deployedAllo)
 
-  // const { data: deployedRegistry } = useDeployedContractInfo("Registry");
+  // const { data: deployedRegistry } = useDeployedContractInfo("REGISTRY");
   // console.log(deployedRegistry)
   
   return (

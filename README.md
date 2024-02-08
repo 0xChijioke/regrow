@@ -1,4 +1,4 @@
-# ReGrow 🏗 Scaffold-ETH 2 & Allo protocol
+# 🏗 Scaffold-ETH 2 & Allo protocol
 
 <h4 align="center">
   <a href="https://docs.scaffoldeth.io">Scaffold-eth-2 Documentation</a> |
@@ -6,19 +6,31 @@
   <a href="https://regrow.vercel.app">Demo</a>
 </h4>
 
-Regrow is a decentralized application built on top of the Allo Protocol. It enables users to create and manage pools and profiles with an intuitive user interface.
+Regrow is a decentralized application built on top of the Allo Protocol. It enables users to create and manage profiles.
 
 
 
 Features
+1. Profile Creation and Management
 
-    Create Profiles: Initiate the creation of profiles with personalized information and metadata.
+  -  [Create Profiles](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/CreateProfile.tsx): - Initiate the creation of profiles with personalized information and metadata.
 
-    Manage Profiles: Update profile name, members, metadata, create pool etc.
+  -  [Update name](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/UpdateName.tsx): - Initiate the creation of profiles with personalized information and metadata. Modify the name associated with a profile.
 
-    Create Pools: Easily create new pools with custom strategies, tokens, and managers.
+  -  [Update members](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/ManageMembers.tsx): Manage members associated with a profile.
+
+  -  [Transfer ownership](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/TransferOwnership.tsx): Facilitate the transfer of ownership of a profile.
+
+  -  [Accept Ownership](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/AcceptOwnership.tsx): Accept ownership transfer requests for profiles.
+
+  -  [View Profiles](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/ProfilesList.tsx): Retrieve information about existing profiles.
 
 
+
+
+## Current Focus: Creating Pools with Custom Strategies
+
+Currently focusing on implementing the ability to [create pools](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/allo/create/CreatePoolContainer.tsx) with custom strategies using the Microgrants strategy provided by the Allo-sdk. This feature is still a work in progress to define custom strategies for managing and distributing funds within pools.
 
 ## Requirements
 
@@ -65,8 +77,4 @@ yarn start
 Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
 
 
-## Contributing to ReGrow
-
-We welcome contributions to Regrow!
-
-Please see [CONTRIBUTING.MD](https://github.com/0xChijioke/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to ReGrow.
+## Contribute!

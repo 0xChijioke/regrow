@@ -29,13 +29,13 @@ const ProfileDetail = () => {
 
   // Check for pending owner
   const { data: pendingOwner } = useScaffoldContractRead({
-    contractName: "Registry",
+    contractName: "REGISTRY",
     functionName: "profileIdToPendingOwner",
     args: [profileId  as `0x${string}`],
   });
   // Check if address is an owner or member of profile
   const { data: isOwnerOrMember } = useScaffoldContractRead({
-    contractName: "Registry",
+    contractName: "REGISTRY",
     functionName: "isOwnerOrMemberOfProfile",
     args: [profileId as `0x${string}`, address],
   });
@@ -98,7 +98,7 @@ const ProfileDetail = () => {
 
                       <div className="dropdown dropdown-end">
                       <div tabIndex={0} role="button" className="btn rounded-md py-1 m-1">Manage</div>
-                      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 items-center rounded-box w-52">
                         <li><UpdateName profile={profile} refetch={refetch} /></li>
                         <li><UpdateMetadata profile={profile} /></li>
                         <li><ManageMembers profile={profile} refetch={refetch} /></li>
