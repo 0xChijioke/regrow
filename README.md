@@ -30,6 +30,7 @@ Features
 
 ## Current Focus: Creating Pools with Custom Strategies
 
+
 Currently focusing on implementing the ability to [create pools](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/allo/create/CreatePoolContainer.tsx) with custom strategies using the Microgrants strategy provided by the Allo-sdk. This feature is still a work in progress to define custom strategies for managing and distributing funds within pools.
 
 ## Requirements
