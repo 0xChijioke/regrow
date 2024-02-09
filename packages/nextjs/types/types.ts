@@ -26,6 +26,7 @@ export type Profile = {
   };
   
   export type ProfileDetail = {
+    [x: string]: SetStateAction<ProfileDetail | null>;
     id: string;
     name: string;
     nonce: string;

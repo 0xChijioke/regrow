@@ -3,6 +3,7 @@ import { GraphQLClient } from "graphql-request";
 import { getProfileById, getProfilesQuery, searchProfilesQuery } from './query';
 import { getIPFSClient } from "~~/services/ipfs";
 import PinataSDK from "@pinata/sdk";
+import { ProfileDetail } from "~~/types/types";
 
 const PINATA_API = process.env.NEXT_PUBLIC_PINATA_API_KEY
 const PINATA_SECRET = process.env.NEXT_PUBLIC_PINATA_API_SECRET
@@ -64,8 +65,8 @@ export const searchProfiles = async (first: number, skip?: number, search?: stri
 
 
 
-export const fetchProfileById = async (id: string) => {
-  const data = await client.request(getProfileById, {
+export const fetchProfileById = async (id: string): Promise<ProfileDetail | null> => {
+  const data: any = await client.request(getProfileById, {
       id,
   });
   return data;

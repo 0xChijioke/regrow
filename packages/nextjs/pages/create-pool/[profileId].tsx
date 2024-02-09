@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import CreatePool from "~~/components/allo/CreatePool";
 import CreatePoolContainer from "~~/components/allo/create/CreatePoolContainer";
 
 

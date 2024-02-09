@@ -23,19 +23,19 @@ const ProfileDetail = () => {
   const router = useRouter();
   const { profileId } = router.query;
   const [profile, setProfile] = useState<ProfileDetail | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState<string | null>(null);
 
 
   // Check for pending owner
   const { data: pendingOwner } = useScaffoldContractRead({
-    contractName: "REGISTRY",
+    contractName: "Registry",
     functionName: "profileIdToPendingOwner",
     args: [profileId  as `0x${string}`],
   });
   // Check if address is an owner or member of profile
   const { data: isOwnerOrMember } = useScaffoldContractRead({
-    contractName: "REGISTRY",
+    contractName: "Registry",
     functionName: "isOwnerOrMemberOfProfile",
     args: [profileId as `0x${string}`, address],
   });
@@ -59,12 +59,12 @@ const ProfileDetail = () => {
   
 
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>{error}</div>;
+  if (isError) {
+    return <div>Something went wrong.</div>;
   }
 
   const profileCreated = profile?.createdAt ? formatTime(Number(profile.createdAt)) : '';

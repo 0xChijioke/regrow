@@ -11,7 +11,7 @@ const ManageMembers = ({ profile, refetch }: { profile: ProfileDetail; refetch: 
     const { writeAsync: addMembers, isLoading: isAddingMembers } = useScaffoldContractWrite({
         contractName: "Registry",
         functionName: "addMembers",
-        args: [profile.id, [newMemberAddress]],
+        args: [profile.id as `0x${string}`, [newMemberAddress]],
         blockConfirmations: 1,
         onBlockConfirmation: (txnReceipt) => {
         console.log("Transaction blockHash", txnReceipt.blockHash);
@@ -22,7 +22,7 @@ const ManageMembers = ({ profile, refetch }: { profile: ProfileDetail; refetch: 
     const { writeAsync: removeMembers, isLoading: isRemovingMembers } = useScaffoldContractWrite({
         contractName: "Registry",
         functionName: "removeMembers",
-        args: [profile.id, [removeMemberAddress]],
+        args: [profile.id as `0x${string}`, [removeMemberAddress]],
         blockConfirmations: 1,
         onBlockConfirmation: (txnReceipt) => {
         console.log("Transaction blockHash", txnReceipt.blockHash);

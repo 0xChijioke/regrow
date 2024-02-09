@@ -3,10 +3,7 @@ import CreatePoolSteps from "./CreatePoolSteps";
 import SelectStrategy from "./strategy/SelectStrategy";
 import InitData from "./strategy/InitData";
 import CreatePool from "./CreatePool";
-import { CreatePoolArgs, InitializeParams } from "@allo-team/allo-v2-sdk/dist/types";
-import { Allo } from "@allo-team/allo-v2-sdk";
-import { useConfig, usePublicClient } from "wagmi";
-import { getWalletClient, sendTransaction } from "@wagmi/core";
+import { CreatePoolArgs } from "@allo-team/allo-v2-sdk/dist/types";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 
@@ -30,11 +27,7 @@ export const TxnNotification = ({ message, blockExplorerLink }: { message: strin
 };
 
 const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
-  const { chains } = useConfig();
-  const publicClient = usePublicClient();
-  const chainIdConfig = chains && chains[0].id;
-  const rpcConfig = chains && chains[0].rpcUrls.default.http[0];
-  // console.log(rpcConfig)
+ 
 
     
   const [strategyName, setStrategyName] = useState<string>("");
@@ -62,8 +55,8 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
     }));
   }, [profileId]);
   
-  const { writeAsync: createPoolWrite, isLoading: isCreatingPool, isMining } = useScaffoldContractWrite({
-    contractName: 'ALLOPROXY',
+  const { writeAsync: createPoolWrite } = useScaffoldContractWrite({
+    contractName: 'Allo',
     functionName: 'createPoolWithCustomStrategy',
     args: [
       poolData.profileId as `0x${string}`,
@@ -125,11 +118,8 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
     
     
     const handleCreatePool = async () => {
-    const walletClient = await getWalletClient();
     // console.log("Creating pool with data:", poolData);
     
-
-    // console.log(walletClient)
     try {
       const res = await createPoolWrite();
       console.log(res)
