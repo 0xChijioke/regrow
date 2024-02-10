@@ -6,7 +6,7 @@ import { shuffle } from "lodash";
 // import { Spinner } from "../assets/Spinner";
 // import Search from "../Search";
 
-
+// TODO: Work on search and displaying pools.
 const ProfilesList = () => {
   const PAGE_SIZE = 9;
   const [orderBy, setOrderBy] = useState<OrderByField>(OrderByField.CreatedAt);
@@ -50,7 +50,7 @@ const ProfilesList = () => {
         <div className="flex-row flex justify-end items-center gap-x-4">
           {/* <Search /> */}
           <div>
-            <select className="select select-bordered w-full max-w-xs" onChange={(e) => handleOrderByChange(e.target.value)}>
+            <select className="select select-sm select-bordered w-full max-w-xs" onChange={(e) => handleOrderByChange(e.target.value)}>
               <option value="createdAt">Created At</option>
               <option value="id">ID</option>
               <option value="name">Name</option>
