@@ -15,7 +15,7 @@ Features
 
   -  [Create Profiles](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/CreateProfile.tsx): - Initiate the creation of profiles with personalized information and metadata.
 
-  -  [Update name](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/UpdateName.tsx): - Initiate the creation of profiles with personalized information and metadata. Modify the name associated with a profile.
+  -  [Update name](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/UpdateName.tsx): - Modify the name associated with a profile.
 
   -  [Update members](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/ManageMembers.tsx): Manage members associated with a profile.
 
