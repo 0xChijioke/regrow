@@ -5,6 +5,12 @@ export const graphqlEndpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL || "";
 
 
 
+
+// ===============================
+// ========== Profiles ==========
+// ===============================
+
+
 // Query to fetch profiles
 export const getProfilesQuery = gql`
 query GetProfiles($first: Int!, $skip: Int, $orderBy: String, $orderDirection: String) {
@@ -108,6 +114,70 @@ export const getProfilesByOwnerQuery = gql`
       owner
       createdAt
       anchor
+    }
+  }
+`;
+
+
+
+// ===============================
+// ============ Pools ============
+// ===============================
+
+
+// Query to fetch pools with dynamic number of managers
+export const getPoolsQuery = gql`
+  query GetPools($first: Int!, $skip: Int, $orderBy: String, $orderDirection: String) {
+    pools(
+      first: $first
+      skip: $skip
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+    ) {
+      amount
+      baseFeesPaid
+      createdAt
+      id
+      managerRole {
+        accounts {
+          account {
+            id
+          }
+        }
+      }
+      managers {
+        id
+      }
+      metadata {
+        pointer
+        protocol
+      }
+      strategy
+      token
+      updatedAt
+    }
+  }
+`;
+
+
+// Query to fetch a pool by ID
+export const getPoolByIdQuery = gql`
+  query GetPoolById($id: String!) {
+    pool(id: $id) {
+      amount
+      createdAt
+      id
+      managers {
+        id
+      }
+      metadata {
+        pointer
+        protocol
+        id
+      }
+      strategy
+      token
+      updatedAt
     }
   }
 `;

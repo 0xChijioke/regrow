@@ -1,9 +1,10 @@
 // request.ts
 import { GraphQLClient } from "graphql-request";
-import { getProfileById, getProfilesQuery, searchProfilesQuery } from './query';
+import { getPoolByIdQuery, getPoolsQuery, getProfileById, getProfilesQuery, searchProfilesQuery } from './query';
 import { getIPFSClient } from "~~/services/ipfs";
 import PinataSDK from "@pinata/sdk";
 import { ProfileDetail } from "~~/types/types";
+import { Pool } from "@allo-team/allo-v2-sdk/dist/types";
 
 const PINATA_API = process.env.NEXT_PUBLIC_PINATA_API_KEY
 const PINATA_SECRET = process.env.NEXT_PUBLIC_PINATA_API_SECRET
@@ -17,16 +18,11 @@ export const IPFSClient = getIPFSClient();
 
 
 
-// pinata.testAuthentication().then((result) => {
-//   //handle successful authentication here
-//   console.log(result);
-// }).catch((err) => {
-//   //handle error here
-//   console.log(err);
-// });
 
 
-
+// ===============================
+// ========== Profiles ==========
+// ===============================
 
 export const fetchProfilesQuery = async (first: number, skip?: number, orderBy?: string, orderDirection?: string) => {
   try {
@@ -73,6 +69,37 @@ export const fetchProfileById = async (id: string): Promise<ProfileDetail | null
 };
 
 
+// ===============================
+// ============ Pools ============
+// ===============================
 
 
 
+
+export const fetchPoolsQuery = async (first: number, skip?: number, orderBy?: string, orderDirection?: string) => {
+  try {
+    const data = await client.request(getPoolsQuery, {
+      first,
+      skip,
+      orderBy,
+      orderDirection,
+    });
+    
+    return data;
+  } catch (error) {
+    console.error("Error fetching pools:", error);
+    throw error;
+  }
+};
+
+export const fetchPoolById = async (id: string): Promise<Pool | null> => {
+  try {
+    const data: any = await client.request(getPoolByIdQuery, {
+      id,
+    });
+    return data;
+  } catch (error) {
+    console.error("Error fetching pool by ID:", error);
+    throw error;
+  }
+};
