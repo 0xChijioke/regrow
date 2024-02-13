@@ -4,7 +4,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const externalContracts = {
     5: {
           Allo: {
-            address: "0xB087535DB0df98fC4327136e897A5985E5Cfbd66",
+            address: "0x1133eA7Af70876e64665ecD07C0A0476d09465a1",
             abi: [
               { inputs: [], name: "ALLOCATION_ACTIVE", type: "error" },
               { inputs: [], name: "ALLOCATION_NOT_ACTIVE", type: "error" },

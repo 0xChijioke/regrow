@@ -26,10 +26,7 @@ export const TxnNotification = ({ message, blockExplorerLink }: { message: strin
   );
 };
 
-const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
- 
-
-    
+const CreatePoolContainer = ({ profileId }: { profileId: string }) => {    
   const [strategyName, setStrategyName] = useState<string>("");
   const [currentStep, setCurrentStep] = useState<string>("1");
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);

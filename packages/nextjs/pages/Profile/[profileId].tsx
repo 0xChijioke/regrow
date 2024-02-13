@@ -57,10 +57,12 @@ const ProfileDetail = () => {
   },[data])
 
   
-
-
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center'>
+        <progress className="progress w-72"></progress>
+      </div>
+    );
   }
 
   if (isError) {
@@ -172,7 +174,7 @@ const ProfileDetail = () => {
             </div>
 
           <div className='w-full justify-center mt-2 items-center text-center bg-base-300 rounded-xl p-3'>
-            Analyisis & Evalation...
+            Evalation
           </div>
           {/* Display other profile details */}
         </div>
