@@ -12,19 +12,23 @@
     Wait for Pool Creation Transaction:
         Wait for the pool creation transaction to be mined using waitForTransaction.
 
-    Index Pool and Metadata (Optional):
-        If needed, index the pool and metadata by polling the indexer.
+    User Experience for DonationVotingMerkleDistributionStrategy:
 
-    Batch Set Allocators (Optional):
-        Set allocators for the strategy using a method like batchSetAllocator.
+    Proposal Submission:
+        Users can submit proposals for fund distribution through an intuitive form on the frontend.
+        Include input fields for the Merkle root, distribution timelines, and other relevant parameters.
 
-    Create Application:
-        Save metadata to IPFS.
-        Register an application to the pool by calling a method similar to getRegisterRecipientData and sending a transaction.
-        Poll the indexer for the recipient ID and metadata indexing.
+    Voting Interface:
+        Display ongoing proposals along with details and options for users to cast their votes.
+        Provide a clear overview of the voting results and the status of each proposal.
 
-    Allocate (Optional):
-        Set some allocators using a method similar to batchSetAllocator.
-        Set the pool ID for the strategy.
-        Get allocation data using a method like getAllocationData.
-        Allocate funds by sending an allocation transaction.
+    Claiming Allocations:
+        Implement a feature for users to claim their allocated funds using Merkle proofs.
+        Display the claimed and unclaimed allocations for transparency.
+
+    Dynamic Updates:
+        Allow users to monitor and participate in the dynamic update of distribution plans.
+        Provide notifications or updates when new proposals are submitted or when voting results are available.
+
+    User Dashboard:
+        Create a personalized dashboard where users can track their voting history, claimed funds, and overall participation.
