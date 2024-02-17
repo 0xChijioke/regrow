@@ -1,13 +1,28 @@
-import type { NextPage } from "next";
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import CreatePoolContainer from "../_components/CreatePoolContainer";
+import { NextPage } from "next";
 
-function Profiles(): NextPage {
+const Page: NextPage = () => {
+  const params = useParams();
+  const { profileId } = params;
+  const [creatorProfileId, setCreatorProfileId] = useState<string>("");
 
-    return (
-        <div>
-            
-        </div>        
-    )
-    
-}
+  useEffect(() => {
+    if (profileId) {
+      if (Array.isArray(profileId)) {
+        setCreatorProfileId(profileId[0]);
+      } else {
+        setCreatorProfileId(profileId);
+      }
+    }
+  }, [profileId]);
 
-export default Profiles;
+  return (
+    <div>
+      <CreatePoolContainer profileId={creatorProfileId} />
+    </div>
+  );
+};
+
+export default Page;

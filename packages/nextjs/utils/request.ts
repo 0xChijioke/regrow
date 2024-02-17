@@ -1,24 +1,15 @@
 // request.ts
-import { GraphQLClient } from "graphql-request";
-import { getPoolByIdQuery, getPoolsQuery, getProfileById, getProfilesQuery, searchProfilesQuery } from './query';
-import { getIPFSClient } from "~~/services/ipfs";
-// import PinataSDK from "@pinata/sdk";
-import { ProfileDetail } from "~~/types/types";
+import { getPoolByIdQuery, getPoolsQuery, getProfileById, getProfilesQuery, searchProfilesQuery } from "./query";
 import { Pool } from "@allo-team/allo-v2-sdk/dist/types";
+import { GraphQLClient } from "graphql-request";
+import { getIPFSClient } from "~~/services/ipfs";
 
-const PINATA_API = process.env.NEXT_PUBLIC_PINATA_API_KEY
-const PINATA_SECRET = process.env.NEXT_PUBLIC_PINATA_API_SECRET
+// const PINATA_API = process.env.NEXT_PUBLIC_PINATA_API_KEY
+// const PINATA_SECRET = process.env.NEXT_PUBLIC_PINATA_API_SECRET
 
-
-// export const pinata = new PinataSDK({ pinataApiKey: PINATA_API, pinataSecretApiKey: PINATA_SECRET });
-
-const graphqlEndpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL || ''; 
+const graphqlEndpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL || "";
 const client = new GraphQLClient(graphqlEndpoint);
 export const IPFSClient = getIPFSClient();
-
-
-
-
 
 // ===============================
 // ========== Profiles ==========
@@ -33,7 +24,6 @@ export const fetchProfilesQuery = async (first: number, skip?: number, orderBy?:
       orderDirection,
     });
 
-    
     return data;
   } catch (error) {
     console.error("Error fetching profiles:", error);
@@ -47,10 +37,9 @@ export const searchProfiles = async (first: number, skip?: number, search?: stri
       first,
       skip,
       search,
-      address
+      address,
     });
 
-    
     return data;
   } catch (error) {
     console.error("Error fetching profiles:", error);
@@ -58,23 +47,16 @@ export const searchProfiles = async (first: number, skip?: number, search?: stri
   }
 };
 
-
-
-
-export const fetchProfileById = async (id: string): Promise<ProfileDetail | null> => {
+export const fetchProfileById = async (id: string): Promise<any> => {
   const data: any = await client.request(getProfileById, {
-      id,
+    id,
   });
   return data;
 };
 
-
 // ===============================
 // ============ Pools ============
 // ===============================
-
-
-
 
 export const fetchPoolsQuery = async (first: number, skip?: number, orderBy?: string, orderDirection?: string) => {
   try {
@@ -84,7 +66,7 @@ export const fetchPoolsQuery = async (first: number, skip?: number, orderBy?: st
       orderBy,
       orderDirection,
     });
-    
+
     return data;
   } catch (error) {
     console.error("Error fetching pools:", error);

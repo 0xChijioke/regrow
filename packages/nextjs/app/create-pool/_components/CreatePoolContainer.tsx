@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import CreatePoolSteps from "./CreatePoolSteps";
-import SelectStrategy from "./strategy/SelectStrategy";
-import InitData from "./strategy/InitData";
 import CreatePool from "./CreatePool";
+import CreatePoolSteps from "./CreatePoolSteps";
+import InitData from "./strategy/InitData";
+import SelectStrategy from "./strategy/SelectStrategy";
 import { CreatePoolArgs } from "@allo-team/allo-v2-sdk/dist/types";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
-
-
-
-
 
 /**
  * Custom notification content for TXs.
@@ -26,7 +22,7 @@ export const TxnNotification = ({ message, blockExplorerLink }: { message: strin
   );
 };
 
-const CreatePoolContainer = ({ profileId }: { profileId: string }) => {    
+const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
   const [strategyName, setStrategyName] = useState<string>("");
   const [currentStep, setCurrentStep] = useState<string>("1");
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
@@ -35,26 +31,26 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
     profileId: "",
     strategy: "",
     initStrategyData: "",
-    token: '',
+    token: "",
     amount: BigInt(0),
     metadata: {
       protocol: BigInt(1),
-      pointer: 'bafybeid47tux23bnyljcgm3jw3ifimaojazgknnjre7m4pcaiw5gommvta', // placeholder
+      pointer: "bafybeid47tux23bnyljcgm3jw3ifimaojazgknnjre7m4pcaiw5gommvta", // placeholder
     },
     managers: [],
   });
 
   // useEffect to set profileId in poolData when the component mounts
   useEffect(() => {
-    setPoolData((prevData) => ({
+    setPoolData(prevData => ({
       ...prevData,
       profileId: profileId,
     }));
   }, [profileId]);
-  
+
   const { writeAsync: createPoolWrite } = useScaffoldContractWrite({
-    contractName: 'Allo',
-    functionName: 'createPoolWithCustomStrategy',
+    contractName: "Allo",
+    functionName: "createPoolWithCustomStrategy",
     args: [
       poolData.profileId as `0x${string}`,
       poolData.strategy,
@@ -66,38 +62,28 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
     ],
     value: poolData.amount,
     blockConfirmations: 1,
-    onBlockConfirmation: txnReceipt => {
-      console.log('Transaction blockHash', txnReceipt.blockHash);
+    onBlockConfirmation: (txnReceipt: { blockHash: any }) => {
+      console.log("Transaction blockHash", txnReceipt.blockHash);
     },
-    onSuccess: data => {
-      console.log(data)
-    }
+    onSuccess: (data: any) => {
+      console.log(data);
+    },
   });
-    
-  
-  
-  
-  
-  
-  
+
   const handleStrategySelect = (name: string, address: string) => {
     setStrategyName(name);
-    setPoolData((prevData) => ({ ...prevData, strategy: address }));   
-      
-    };
-
-
-  const handleInitData = (initData: any) => {
-    setPoolData((prevData) => ({ ...prevData, initStrategyData: initData }));
+    setPoolData(prevData => ({ ...prevData, strategy: address }));
   };
 
+  const handleInitData = (initData: any) => {
+    setPoolData(prevData => ({ ...prevData, initStrategyData: initData }));
+  };
 
   const handlePoolDataInput = (name: string, token: string, amount: bigint, managers: string[]) => {
     // Pool name and other field will be used to set ipfs metadata here
     setPoolName(name);
 
-
-    setPoolData((prevData) => ({
+    setPoolData(prevData => ({
       ...prevData,
       token: token,
       amount: amount,
@@ -106,27 +92,23 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
 
     handleNextStep();
   };
-  
-  
+
   const handleNextStep = () => {
-      setCompletedSteps([...completedSteps, currentStep]);
-      setCurrentStep(String(parseInt(currentStep) + 1));
-    };
-    
-    
-    const handleCreatePool = async () => {
+    setCompletedSteps([...completedSteps, currentStep]);
+    setCurrentStep(String(parseInt(currentStep) + 1));
+  };
+
+  const handleCreatePool = async () => {
     // console.log("Creating pool with data:", poolData);
-    
+
     try {
       const res = await createPoolWrite();
-      console.log(res)
+      console.log(res);
       // Additional logic after successful pool creation
     } catch (error) {
-      console.error('Error creating pool:', error);
+      console.error("Error creating pool:", error);
       // Handle error
     }
-
-  
   };
 
   // console.log("pool data", poolData)
@@ -151,13 +133,11 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
             strategyName={strategyName}
             onInitDataSubmit={handleInitData}
             handlePoolDataInput={handlePoolDataInput}
-            onNextStep={handleNextStep} />
+            onNextStep={handleNextStep}
+          />
         )}
         {currentStep === "3" && poolData.initStrategyData && (
-          <CreatePool
-            poolData={poolData}
-            name={poolName}
-            onCreatePool={handleCreatePool} />
+          <CreatePool poolData={poolData} name={poolName} onCreatePool={handleCreatePool} />
         )}
       </div>
     </div>

@@ -4,23 +4,28 @@ import { ProfileDetail, Tmetadata } from "~~/types/types";
 
 const UpdateMetadata = ({ profile }: { profile: ProfileDetail }) => {
   const [description, setDescription] = useState<string>("");
-  const [profileImage, setProfileImage] = useState();
-  const [metadata, setMetadata] = useState<Tmetadata>();
+  const [profileImage, setProfileImage] = useState<string>(); // has type string as placeholder
+  const [
+    metadata,
+    // setMetadata
+  ] = useState<Tmetadata>();
 
-  const { writeAsync: updateMetadata, isLoading: isUpdatingMetadata } = useScaffoldContractWrite({
+  const {
+    // writeAsync: updateMetadata,
+    isLoading: isUpdatingMetadata,
+  } = useScaffoldContractWrite({
     contractName: "Registry",
     functionName: "updateProfileMetadata",
-    args: [profile.id, metadata],
+    args: [profile.id as `0x${string}`, metadata],
     blockConfirmations: 1,
-    onBlockConfirmation: txnReceipt => {
+    onBlockConfirmation: (txnReceipt: { blockHash: any }) => {
       console.log("Transaction blockHash", txnReceipt.blockHash);
     },
   });
 
+  // const handleMetadataUpdate = async () => {
 
-  const handleMetadataUpdate = async () => {
-    
-  };
+  // };
 
   const characterLimit = 600;
 
@@ -47,9 +52,16 @@ const UpdateMetadata = ({ profile }: { profile: ProfileDetail }) => {
 
   return (
     <div className="flex justify-between">
-
       {/* Button to open modal for updating description and image */}
-      <button className="rounded-lg" onClick={() => document.getElementById("metadataModal").showModal()}>
+      <button
+        className="rounded-lg"
+        onClick={() => {
+          const metadataModal = document.getElementById("metadataModal") as HTMLDialogElement | null;
+          if (metadataModal) {
+            metadataModal.showModal();
+          }
+        }}
+      >
         Update Metadata
       </button>
       <dialog id="metadataModal" className="modal">
@@ -58,13 +70,18 @@ const UpdateMetadata = ({ profile }: { profile: ProfileDetail }) => {
             method="dialog"
             onSubmit={e => {
               e.preventDefault();
-              handleMetadataUpdate();
+              // handleMetadataUpdate();
             }}
           >
             <button
               type="button"
               className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-              onClick={() => document.getElementById("metadataModal").close()}
+              onClick={() => {
+                const metadataModal = document.getElementById("metadataModal") as HTMLDialogElement | null;
+                if (metadataModal) {
+                  metadataModal.close();
+                }
+              }}
             >
               ✕
             </button>
@@ -83,7 +100,7 @@ const UpdateMetadata = ({ profile }: { profile: ProfileDetail }) => {
 
               <label className="block mt-4">Profile Image:</label>
               <div className="flex items-center justify-center" onDragOver={handleDragOver} onDrop={handleDrop}>
-                <label className="flex items-center w-[100%] bg-base-200 justify-center w-32 h-32 border-2 border-primary border-dashed rounded-md cursor-pointer hover:border-white">
+                <label className="flex items-center w-[100%] bg-base-200 justify-center h-32 border-2 border-primary border-dashed rounded-md cursor-pointer hover:border-white">
                   <input type="file" className="hidden w-full" onChange={e => setProfileImage(e.target.value)} />
                   <span className="text-gray-500">
                     <svg

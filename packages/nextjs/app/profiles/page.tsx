@@ -1,15 +1,15 @@
-'use client'
-import { NextPage } from 'next';
-import React from 'react'
-import ProfilesList from './_components/ProfilesList';
+"use client";
 
-const page: NextPage = () => {
-    return (
-        <div>
-            <ProfilesList />            
-        </div>
-    )
-    
-}
+import React from "react";
+import ProfilesList from "./_components/ProfilesList";
+import { NextPage } from "next";
 
-export default page;
+const Page: NextPage = () => {
+  return (
+    <div>
+      <ProfilesList />
+    </div>
+  );
+};
+
+export default Page;
