@@ -1,11 +1,12 @@
+"use client";
+
 import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { Bars3Icon, BugAntIcon, UsersIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
-import Search from "./Search";
 
 type HeaderMenuLink = {
   label: string;
@@ -25,7 +26,7 @@ export const menuLinks: HeaderMenuLink[] = [
   },
   {
     label: "Create Profile",
-    href: "/create",
+    href: "/create-profile",
     icon: <UsersIcon className="h-4 w-4" />,
   },
   {
@@ -36,12 +37,12 @@ export const menuLinks: HeaderMenuLink[] = [
 ];
 
 export const HeaderMenuLinks = () => {
-  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <>
       {menuLinks.map(({ label, href, icon }) => {
-        const isActive = router.pathname === href;
+        const isActive = pathname === href;
         return (
           <li key={href}>
             <Link
@@ -98,8 +99,8 @@ export const Header = () => {
           )}
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
-          <div className="flex relative w-14 h-14">
-            <Image alt="ReGrow logo" className="cursor-pointer" fill src="/logo.png" />
+          <div className="flex relative w-10 h-10">
+            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.png" />
           </div>
           <div className="flex flex-col">
             <span className="font-bold leading-tight">ReGrow🌱</span>

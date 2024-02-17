@@ -2,7 +2,7 @@
 import { GraphQLClient } from "graphql-request";
 import { getPoolByIdQuery, getPoolsQuery, getProfileById, getProfilesQuery, searchProfilesQuery } from './query';
 import { getIPFSClient } from "~~/services/ipfs";
-import PinataSDK from "@pinata/sdk";
+// import PinataSDK from "@pinata/sdk";
 import { ProfileDetail } from "~~/types/types";
 import { Pool } from "@allo-team/allo-v2-sdk/dist/types";
 
@@ -10,7 +10,7 @@ const PINATA_API = process.env.NEXT_PUBLIC_PINATA_API_KEY
 const PINATA_SECRET = process.env.NEXT_PUBLIC_PINATA_API_SECRET
 
 
-export const pinata = new PinataSDK({ pinataApiKey: PINATA_API, pinataSecretApiKey: PINATA_SECRET });
+// export const pinata = new PinataSDK({ pinataApiKey: PINATA_API, pinataSecretApiKey: PINATA_SECRET });
 
 const graphqlEndpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL || ''; 
 const client = new GraphQLClient(graphqlEndpoint);

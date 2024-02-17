@@ -1,8 +1,7 @@
 import { WriteContractResult, getPublicClient } from "@wagmi/core";
 import { Hash, SendTransactionParameters, TransactionReceipt, WalletClient } from "viem";
 import { useWalletClient } from "wagmi";
-import { getParsedError } from "~~/components/scaffold-eth";
-import { getBlockExplorerTxLink, notification } from "~~/utils/scaffold-eth";
+import { getBlockExplorerTxLink, getParsedError, notification } from "~~/utils/scaffold-eth";
 
 type TransactionFunc = (
   tx: (() => Promise<WriteContractResult>) | (() => Promise<Hash>) | SendTransactionParameters,
@@ -29,9 +28,9 @@ const TxnNotification = ({ message, blockExplorerLink }: { message: string; bloc
 };
 
 /**
- * @description Runs Transaction passed in to returned function showing UI feedback.
- * @param _walletClient
- * @returns function that takes a transaction and returns a promise of the transaction hash
+ * Runs Transaction passed in to returned function showing UI feedback.
+ * @param _walletClient - Optional wallet client to use. If not provided, will use the one from useWalletClient.
+ * @returns function that takes in transaction function as callback, shows UI feedback for transaction and returns a promise of the transaction hash
  */
 export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => {
   let walletClient = _walletClient;
