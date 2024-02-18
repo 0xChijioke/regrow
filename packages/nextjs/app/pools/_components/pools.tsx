@@ -1,5 +1,5 @@
-const pools = () => {
+const Pools = () => {
   return <div>pools</div>;
 };
 
-export default pools;
+export default Pools;
