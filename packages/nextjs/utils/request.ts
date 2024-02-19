@@ -1,15 +1,17 @@
 // request.ts
-import { getPoolByIdQuery, getPoolsQuery, getProfileById, getProfilesQuery, searchProfilesQuery } from "./query";
+import { graphqlEndpoint } from "./config";
+import {
+  getPoolByIdQuery,
+  getPoolIdsQuery,
+  getPoolsQuery,
+  getProfileById,
+  getProfilesQuery,
+  searchProfilesQuery,
+} from "./query";
 import { Pool } from "@allo-team/allo-v2-sdk/dist/types";
 import { GraphQLClient } from "graphql-request";
-import { getIPFSClient } from "~~/services/ipfs";
 
-// const PINATA_API = process.env.NEXT_PUBLIC_PINATA_API_KEY
-// const PINATA_SECRET = process.env.NEXT_PUBLIC_PINATA_API_SECRET
-
-const graphqlEndpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL || "";
 const client = new GraphQLClient(graphqlEndpoint);
-export const IPFSClient = getIPFSClient();
 
 // ===============================
 // ========== Profiles ==========
@@ -70,6 +72,17 @@ export const fetchPoolsQuery = async (first: number, skip?: number, orderBy?: st
     return data;
   } catch (error) {
     console.error("Error fetching pools:", error);
+    throw error;
+  }
+};
+
+// Function to fetch pool IDs
+export const fetchPoolIds = async (): Promise<any> => {
+  try {
+    const data = await client.request(getPoolIdsQuery);
+    return data;
+  } catch (error) {
+    console.error("Error fetching pool IDs:", error);
     throw error;
   }
 };

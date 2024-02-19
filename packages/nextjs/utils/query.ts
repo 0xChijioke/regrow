@@ -3,23 +3,14 @@ import { gql } from "graphql-request";
 
 export const graphqlEndpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL || "";
 
-
-
-
 // ===============================
 // ========== Profiles ==========
 // ===============================
 
-
 // Query to fetch profiles
 export const getProfilesQuery = gql`
-query GetProfiles($first: Int!, $skip: Int, $orderBy: String, $orderDirection: String) {
-  profiles(
-    first: $first
-    skip: $skip
-    orderBy: $orderBy
-    orderDirection: $orderDirection
-    ) {
+  query GetProfiles($first: Int!, $skip: Int, $orderBy: String, $orderDirection: String) {
+    profiles(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
       createdAt
       anchor
       name
@@ -77,8 +68,6 @@ export const searchProfilesQuery = gql`
   }
 `;
 
-
-
 export const getProfileById = gql`
   query GetProfileById($id: String!) {
     profile(id: $id) {
@@ -118,22 +107,14 @@ export const getProfilesByOwnerQuery = gql`
   }
 `;
 
-
-
 // ===============================
 // ============ Pools ============
 // ===============================
 
-
 // Query to fetch pools with dynamic number of managers
 export const getPoolsQuery = gql`
   query GetPools($first: Int!, $skip: Int, $orderBy: String, $orderDirection: String) {
-    pools(
-      first: $first
-      skip: $skip
-      orderBy: $orderBy
-      orderDirection: $orderDirection
-    ) {
+    pools(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
       amount
       baseFeesPaid
       createdAt
@@ -159,6 +140,13 @@ export const getPoolsQuery = gql`
   }
 `;
 
+export const getPoolIdsQuery = gql`
+  query GetPoolIds {
+    pools(orderBy: "createdAt", orderDirection: "desc") {
+      id
+    }
+  }
+`;
 
 // Query to fetch a pool by ID
 export const getPoolByIdQuery = gql`

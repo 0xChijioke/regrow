@@ -12,14 +12,14 @@ const imageUrl = `${baseUrl}/thumbnail.jpg`;
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "ReGrow",
-    template: "%s | ReGrow App",
+    default: "Regrow",
+    template: "%s | Regrow App",
   },
   description: "Built with 🏗 Scaffold-ETH 2",
   openGraph: {
     title: {
-      default: "ReGrow",
-      template: "%s | ReGrow App",
+      default: "Regrow",
+      template: "%s | Regrow App",
     },
     description: "Built with 🏗 Scaffold-ETH 2",
     images: [
@@ -32,8 +32,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [imageUrl],
     title: {
-      default: "ReGrow",
-      template: "%s | ReGrow",
+      default: "Regrow",
+      template: "%s | Regrow",
     },
     description: "Built with 🏗 Scaffold-ETH 2",
   },
@@ -47,9 +47,7 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
     <html suppressHydrationWarning>
       <body>
         <ThemeProvider enableSystem>
-          <ScaffoldEthAppWithProviders>
-            {children}
-          </ScaffoldEthAppWithProviders>
+          <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
         </ThemeProvider>
       </body>
     </html>
