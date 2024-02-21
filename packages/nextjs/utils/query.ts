@@ -141,9 +141,27 @@ export const getPoolsQuery = gql`
 `;
 
 export const getPoolIdsQuery = gql`
-  query GetPoolIds {
-    pools(orderBy: "createdAt", orderDirection: "desc") {
+  query GetPoolIds($first: Int, $skip: Int, $orderBy: String, $orderDirection: String) {
+    pools(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
       id
+    }
+  }
+`;
+
+// query for fetching additional pool information
+export const getPoolDataQuery = gql`
+  query GetAdditionalPoolData($orderDirection: String, $orderBy: String, $first: Int, $skip: Int) {
+    pools(orderDirection: $orderDirection, orderBy: $orderBy, first: $first, skip: $skip) {
+      amount
+      managerRole {
+        accounts {
+          account {
+            id
+          }
+        }
+      }
+      createdAt
+      updatedAt
     }
   }
 `;

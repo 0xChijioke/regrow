@@ -2,6 +2,7 @@
 import { graphqlEndpoint } from "./config";
 import {
   getPoolByIdQuery,
+  getPoolDataQuery,
   getPoolIdsQuery,
   getPoolsQuery,
   getProfileById,
@@ -76,13 +77,40 @@ export const fetchPoolsQuery = async (first: number, skip?: number, orderBy?: st
   }
 };
 
-// Function to fetch pool IDs
-export const fetchPoolIds = async (): Promise<any> => {
+export const fetchPoolIds = async (
+  first?: number,
+  skip?: number,
+  orderBy?: string,
+  orderDirection?: string,
+): Promise<any[]> => {
   try {
-    const data = await client.request(getPoolIdsQuery);
-    return data;
+    const data: any = await client.request(getPoolIdsQuery, {
+      first,
+      skip,
+      orderBy,
+      orderDirection,
+    });
+    const poolIds = data.pools || [];
+
+    return poolIds;
   } catch (error) {
     console.error("Error fetching pool IDs:", error);
+    throw error;
+  }
+};
+
+// Function to fetch additional pool information
+export const fetchPoolData = async (orderDirection: string, orderBy: string, first?: number, skip?: number) => {
+  try {
+    const additionalData: any = await client.request(getPoolDataQuery, {
+      orderDirection,
+      orderBy,
+      first,
+      skip,
+    });
+    return additionalData.pools || [];
+  } catch (error) {
+    console.error("Error fetching additional pool data:", error);
     throw error;
   }
 };
