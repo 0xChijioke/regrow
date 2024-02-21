@@ -1,60 +1,57 @@
 import { useState } from "react";
+import { TxnNotification } from "../CreatePoolContainer";
 import { deployStrategy } from "./deployStrategy";
-import { InitializeParams } from "@allo-team/allo-v2-sdk/dist/types";
 import { useAccount, useConfig, usePublicClient } from "wagmi";
 import { AddressInput, BytesInput } from "~~/components/scaffold-eth";
+import useSDK from "~~/hooks/allo/useSDK";
 import { notification } from "~~/utils/scaffold-eth";
-import { TxnNotification } from "../CreatePoolContainer";
 
 interface SelectStrategyProps {
-  strategyName: string;
+  // strategyName: string;
   strategyAddress: string;
   strategyInitData: any;
   onStrategySelect: (name: string, address: string) => void;
   onNextStep: () => void;
 }
 
-
-
 const SelectStrategy: React.FC<SelectStrategyProps> = ({
-  strategyName,
+  // strategyName,
   strategyAddress,
   strategyInitData,
   onStrategySelect,
   onNextStep,
 }) => {
   const { chains } = useConfig();
-  const { id: chainIdConfig, rpcUrls } = chains?.[0] || {};
-  const rpcConfig = rpcUrls?.default?.http?.[0];
-  // console.log(chainIdConfig, rpcConfig)
+  const { id: chainIdConfig } = chains?.[0] || {};
+  const { strategyMG } = useSDK();
 
-  
-  const { address } = useAccount(); 
+  const { address } = useAccount();
   const publicClient = usePublicClient();
 
   const [deploymentStatus, setDeploymentStatus] = useState<string | null>(null);
   const [deployedAddress, setDeployedAddress] = useState<string>("");
   const [strategyType, setStrategyType] = useState<"custom" | "cloneable" | "existing">("custom");
 
-  const handleStrategySelection = () => {
-    // Implement logic to handle strategy selection
-  };
+  // const handleStrategySelection = () => {
+  //   // Implement logic to handle strategy selection
+  // };
 
   const handleMicroGrantsDeploy = async () => {
     let notificationId = null;
-  
+
     try {
       notificationId = notification.loading(<TxnNotification message="Awaiting strategy deployment." />);
-      
+
       // Ensure address is truthy
       if (address) {
-        const deployment = await deployStrategy("MicroGrantsv1", rpcConfig, chainIdConfig, address, publicClient);
-        
+        const deployment = await deployStrategy("MicroGrantsv1", chainIdConfig, address, publicClient, strategyMG);
+
         if (deployment && deployment.deployedStrategyAddress) {
           notification.success("Deployment successful!");
           setDeploymentStatus("success");
           setDeployedAddress(deployment.deployedStrategyAddress);
-  
+          console.log(deployedAddress); // placeholder for linting purposes
+
           onStrategySelect("MicroGrants", deployment.deployedStrategyAddress);
           // Add a timeout before moving to the next step
           setTimeout(() => {
@@ -75,9 +72,6 @@ const SelectStrategy: React.FC<SelectStrategyProps> = ({
       }
     }
   };
-  
-
-  
 
   return (
     <div className="space-y-5 w-fit">
@@ -110,7 +104,6 @@ const SelectStrategy: React.FC<SelectStrategyProps> = ({
 
       {strategyType === "custom" && (
         <div className="flex justify-center">
-
           {deploymentStatus !== "success" && (
             <button className="btn rounded-lg btn-secondary" onClick={handleMicroGrantsDeploy}>
               Use MicroGrants Strategy
@@ -124,13 +117,24 @@ const SelectStrategy: React.FC<SelectStrategyProps> = ({
           <div>
             <label>
               Strategy Address:
-              <AddressInput value={strategyAddress} onChange={e => {}} />
+              <AddressInput
+                value={strategyAddress}
+                onChange={e => {
+                  console.log(e);
+                }}
+              />
             </label>
           </div>
           <div>
             <label>
               Strategy Initialization Data:
-              <BytesInput placeholder="Enter bytes" onChange={e => {}} value={strategyInitData} />
+              <BytesInput
+                placeholder="Enter bytes"
+                onChange={e => {
+                  console.log(e);
+                }}
+                value={strategyInitData}
+              />
             </label>
           </div>
         </>

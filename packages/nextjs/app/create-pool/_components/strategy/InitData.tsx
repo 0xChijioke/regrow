@@ -4,8 +4,8 @@ import { debounce } from "lodash";
 import moment, { Moment } from "moment";
 import Datetime from "react-datetime";
 import { formatEther, parseEther } from "viem";
-import { strategyMG } from "~~/app/_components/sdk";
 import { Address, AddressInput, EtherInput, InputBase } from "~~/components/scaffold-eth";
+import useSDK from "~~/hooks/allo/useSDK";
 import { NATIVE } from "~~/utils/config";
 
 interface InitDataProps {
@@ -23,6 +23,7 @@ const InitData: React.FC<InitDataProps> = ({
   handlePoolDataInput,
 }) => {
   const [isInitDataFetched, setIsInitDataFetched] = useState(false);
+  const { strategyMG } = useSDK();
   const [name, setName] = useState("");
   const [token, setToken] = useState(NATIVE);
   const [amount, setAmount] = useState<bigint>(BigInt(0));
@@ -40,7 +41,7 @@ const InitData: React.FC<InitDataProps> = ({
     // console.log(initData)
 
     // Fetch initialization data
-    const fetchedInitData = await strategyMG.getInitializeData(initData);
+    const fetchedInitData = strategyMG && (await strategyMG.getInitializeData(initData));
     // console.log("Fetched Initialization Data:", fetchedInitData);
 
     onInitDataSubmit(fetchedInitData);

@@ -120,7 +120,7 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
       <div className="flex justify-center p-4">
         {currentStep === "1" && (
           <SelectStrategy
-            strategyName={strategyName}
+            // strategyName={strategyName}
             strategyAddress={poolData.strategy}
             strategyInitData={poolData.initStrategyData}
             onStrategySelect={handleStrategySelect}

@@ -1,18 +1,15 @@
 import { getWalletClient, waitForTransaction } from "@wagmi/core";
-import { strategyMG } from "~~/app/_components/sdk";
-
-// import { notification } from "~~/utils/scaffold-eth";
-// import { TxnNotification } from "../CreatePoolContainer";
 
 // Strategy factory function
 export const deployStrategy = async (
   strategyType: string,
-  rpcConfig: string | undefined,
   chainIdConfig: number | undefined,
   address: string,
   publicClient: any,
+  strategyMG: any,
 ) => {
   const walletClient = await getWalletClient({ chainId: chainIdConfig });
+
   let strategyAddress;
 
   try {
