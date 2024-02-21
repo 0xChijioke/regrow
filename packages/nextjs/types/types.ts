@@ -42,3 +42,20 @@ export type ProfileDetail = {
   anchor: string;
   createdAt: string;
 };
+
+// ===============================
+// ============ Pools ============
+// ===============================
+
+export interface PoolData {
+  id: string;
+  profileId: string;
+  strategy: string;
+  token: string;
+  metadata: Tmetadata;
+  managerRole: string[];
+  adminRole: string[];
+  amount: string;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -1,55 +1,55 @@
 import React, { useState } from "react";
-import { Address, AddressInput, InputBase } from "~~/components/scaffold-eth";
+import { AddressInput } from "~~/components/scaffold-eth";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { ProfileDetail } from "~~/types/types";
 
 const ManageMembers = ({ profile, refetch }: { profile: ProfileDetail; refetch: () => void }) => {
-    const [activeTab, setActiveTab] = useState<"add" | "remove">("add");
-    const [newMemberAddress, setNewMemberAddress] = useState<string>("");
-    const [removeMemberAddress, setRemoveMemberAddress] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<"add" | "remove">("add");
+  const [newMemberAddress, setNewMemberAddress] = useState<string>("");
+  const [removeMemberAddress, setRemoveMemberAddress] = useState<string>("");
 
-    const { writeAsync: addMembers, isLoading: isAddingMembers } = useScaffoldContractWrite({
-        contractName: "Registry",
-        functionName: "addMembers",
-        args: [profile.id as `0x${string}`, [newMemberAddress]],
-        blockConfirmations: 1,
-        onBlockConfirmation: (txnReceipt: { blockHash: any; }) => {
-        console.log("Transaction blockHash", txnReceipt.blockHash);
-        refetch();
-        },
-    });
+  const { writeAsync: addMembers, isLoading: isAddingMembers } = useScaffoldContractWrite({
+    contractName: "Registry",
+    functionName: "addMembers",
+    args: [profile.id as `0x${string}`, [newMemberAddress]],
+    blockConfirmations: 1,
+    onBlockConfirmation: (txnReceipt: { blockHash: any }) => {
+      console.log("Transaction blockHash", txnReceipt.blockHash);
+      refetch();
+    },
+  });
 
-    const { writeAsync: removeMembers, isLoading: isRemovingMembers } = useScaffoldContractWrite({
-        contractName: "Registry",
-        functionName: "removeMembers",
-        args: [profile.id as `0x${string}`, [removeMemberAddress]],
-        blockConfirmations: 1,
-        onBlockConfirmation: (txnReceipt: { blockHash: any; }) => {
-        console.log("Transaction blockHash", txnReceipt.blockHash);
-        refetch();
-        },
-    });
+  const { writeAsync: removeMembers, isLoading: isRemovingMembers } = useScaffoldContractWrite({
+    contractName: "Registry",
+    functionName: "removeMembers",
+    args: [profile.id as `0x${string}`, [removeMemberAddress]],
+    blockConfirmations: 1,
+    onBlockConfirmation: (txnReceipt: { blockHash: any }) => {
+      console.log("Transaction blockHash", txnReceipt.blockHash);
+      refetch();
+    },
+  });
 
-    const handleAddMembers = async () => {
-        await addMembers();
+  const handleAddMembers = async () => {
+    await addMembers();
+  };
 
-    };
-
-    const handleRemoveMembers = async () => {
-        await removeMembers();
-        
-    };
+  const handleRemoveMembers = async () => {
+    await removeMembers();
+  };
 
   return (
     <div>
       {/* Button to open modal for managing members */}
-      <button className="rounded-lg" onClick={() => {
-    const membersModal = document.getElementById("membersModal") as HTMLDialogElement | null;
-    if (membersModal) {
-      membersModal.showModal();
-    }
-  }}
->
+      <button
+        className="rounded-lg"
+        onClick={() => {
+          const membersModal = document.getElementById("membersModal") as HTMLDialogElement | null;
+          if (membersModal) {
+            membersModal.showModal();
+          }
+        }}
+      >
         Manage Members
       </button>
       <dialog id="membersModal" className="modal">
@@ -76,7 +76,7 @@ const ManageMembers = ({ profile, refetch }: { profile: ProfileDetail; refetch: 
           {activeTab === "add" && (
             <form
               method="dialog"
-              onSubmit={(e) => {
+              onSubmit={e => {
                 e.preventDefault();
                 handleAddMembers();
               }}
@@ -87,7 +87,7 @@ const ManageMembers = ({ profile, refetch }: { profile: ProfileDetail; refetch: 
                   <AddressInput
                     placeholder="New member address"
                     value={newMemberAddress}
-                    onChange={(e) => setNewMemberAddress(e)}
+                    onChange={e => setNewMemberAddress(e)}
                   />
                 </label>
                 {isAddingMembers && <p>Adding member...</p>}
@@ -103,7 +103,7 @@ const ManageMembers = ({ profile, refetch }: { profile: ProfileDetail; refetch: 
           {activeTab === "remove" && (
             <form
               method="dialog"
-              onSubmit={(e) => {
+              onSubmit={e => {
                 e.preventDefault();
                 handleRemoveMembers();
               }}
@@ -114,7 +114,7 @@ const ManageMembers = ({ profile, refetch }: { profile: ProfileDetail; refetch: 
                   <AddressInput
                     placeholder="Member address to remove"
                     value={removeMemberAddress}
-                    onChange={(e) => setRemoveMemberAddress(e)}
+                    onChange={e => setRemoveMemberAddress(e)}
                   />
                 </label>
                 {isRemovingMembers && <p>Removing member...</p>}
@@ -146,4 +146,3 @@ const ManageMembers = ({ profile, refetch }: { profile: ProfileDetail; refetch: 
 };
 
 export default ManageMembers;
-

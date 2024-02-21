@@ -115,7 +115,7 @@ const CreatePoolContainer = ({ profileId }: { profileId: string }) => {
 
   return (
     <div className="p-6">
-      <CreatePoolSteps currentStep={currentStep} completedSteps={completedSteps} />
+      <CreatePoolSteps currentStep={currentStep} />
 
       <div className="flex justify-center p-4">
         {currentStep === "1" && (
