@@ -8,7 +8,12 @@ const ProfileCard = ({ profile }: { profile: Profile }) => {
   return (
     <div className="card w-90% lg:w-80 m-3 glass">
       <figure>
-        <Image src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="car!" />
+        <Image
+          src={`${process.env.NEXT_PUBLIC_IPFS_READ_GATEWAY}/ipfs/bafkreifmllagjfloblieklder7xv56cqdtdaw3zydms6n7nwjhzw3byrte`}
+          alt="car!"
+          width={340}
+          height={40}
+        />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{profile.name}</h2>

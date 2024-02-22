@@ -187,3 +187,37 @@ export const getPoolByIdQuery = gql`
     }
   }
 `;
+
+// const microGrantsQuery = `
+//   {
+//     poolId
+//     chainId
+//     strategy
+//     allocationStartTime
+//     allocationEndTime
+//     approvalThreshold
+//     maxRequestedAmount
+//     blockTimestamp
+//     pool {
+//       strategy
+//       strategyName
+//       tokenMetadata
+//       token
+//       amount
+//       metadataPointer
+//       profile {
+//         profileId
+//         name
+//       }
+//     }
+//   }
+// `;
+
+// export const getActiveMicroGrantsQuery = gql`
+//   query getActiveMicroGrantsQuery {
+//     activeMicroGrants(
+//       orderBy: BLOCK_TIMESTAMP_DESC
+//     )
+//       ${microGrantsQuery}
+//   }
+// `;

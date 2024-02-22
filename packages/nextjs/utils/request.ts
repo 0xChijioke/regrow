@@ -1,6 +1,7 @@
 // request.ts
 import { graphqlEndpoint } from "./config";
 import {
+  // getActiveMicroGrantsQuery,
   getPoolByIdQuery,
   getPoolDataQuery,
   getPoolIdsQuery,
@@ -126,3 +127,14 @@ export const fetchPoolById = async (id: string): Promise<Pool | null> => {
     throw error;
   }
 };
+
+// // Function to fetch micro grants pools
+// export const fetchMicroGrantsPools = async () => {
+//   try {
+//     const microGrantsPoolsData: any = await client.request(getActiveMicroGrantsQuery);
+//     return microGrantsPoolsData || [];
+//   } catch (error) {
+//     console.error("Error fetching micro grants pools:", error);
+//     throw error;
+//   }
+// };

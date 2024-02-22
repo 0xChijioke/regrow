@@ -8,13 +8,15 @@ const PoolCard = ({ pool }: { pool: PoolData }) => {
     <div className="card w-90% lg:w-80 m-3 glass">
       <figure>
         <Image
-          src="https://d16c97c2np8a2o.cloudfront.net/ipfs/bafkreifmllagjfloblieklder7xv56cqdtdaw3zydms6n7nwjhzw3byrte"
+          src={`${process.env.NEXT_PUBLIC_IPFS_READ_GATEWAY}/ipfs/bafkreifmllagjfloblieklder7xv56cqdtdaw3zydms6n7nwjhzw3byrte`}
           alt="pool"
+          width={340}
+          height={40}
         />
       </figure>
       <div className="card-body flex flex-col">
         {/* <h2 className="card-title">Pool</h2> */}
-        <div className="flex flex-col text-sm">
+        <div className="flex flex-col py-2 text-sm">
           <p>Amount: Ξ {pool.amount}</p>
           <div className="whitespace-nowrap flex gap-x-1">
             Strategy: <Address address={pool.strategy} />

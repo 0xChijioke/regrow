@@ -29,7 +29,9 @@ export const PoolProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const arrayOfIds = fetchedPoolIds.map((obj: { id: string }) => obj.id);
         const fetchedPools = await fetchPools(arrayOfIds, allo, skip, orderBy, sortBy);
 
-        // console.log(fetchedPools);
+        // const mgPools = await fetchMicroGrantsPools()
+        // console.log(mgPools)
+
         setPools(fetchedPools);
       } catch (error) {
         // Handle error

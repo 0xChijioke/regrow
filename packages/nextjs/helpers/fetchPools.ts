@@ -46,3 +46,14 @@ export const fetchPools = async (
 
   return fetchedPools;
 };
+
+// Define a function to fetch strategy information
+// const fetchStrategyInfo = async (strategyAddress: string): Promise<any> => {
+
+//     // Return the retrieved information
+//     return {
+//         // strategyType,
+//         // poolPeriod,
+//         // isActive
+//     };
+// };
