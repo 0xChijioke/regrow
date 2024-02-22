@@ -27,8 +27,8 @@ __metadata:
   linkType: hard
 
 "@allo-team/allo-v2-sdk@npm:^1.0.49":
-  version: 1.0.49
-  resolution: "@allo-team/allo-v2-sdk@npm:1.0.49"
+  version: 1.0.50
+  resolution: "@allo-team/allo-v2-sdk@npm:1.0.50"
   dependencies:
     "@typechain/hardhat": ^9.1.0
     dotenv: ^16.3.1
@@ -36,7 +36,7 @@ __metadata:
     hardhat: ^2.19.5
     mocha: ^10.3.0
     viem: ^1.19.9
-  checksum: 43e6e2cc3f82f9e249dcc23912af4ba94f60d0336f02d6d4c48748309e5d15a4adad6fe3172fb85627f4080b462259e71edcb1c2260a26462b7c05bfa9200669
+  checksum: 919f45c08d4b3f678e152ecf7081fe8cbaa55703fb95471948188fea740f0aabbbd17a725071839bf157795e21a43dfcd149cae8bd80f479bb2ccd6a8c50fc68
   languageName: node
   linkType: hard
 
@@ -6103,9 +6103,9 @@ __metadata:
   linkType: hard
 
 "dotenv@npm:^16.3.1":
-  version: 16.4.4
-  resolution: "dotenv@npm:16.4.4"
-  checksum: fbe0355972634d8843e1804115885e94d70618cfc975eadca67e26b2d71eb46f0ed45c12c2b88fd88cd6b1476a151471227b13311127a3504d10060cc74ce2f7
+  version: 16.4.5
+  resolution: "dotenv@npm:16.4.5"
+  checksum: 301a12c3d44fd49888b74eb9ccf9f07a1f5df43f489e7fcb89647a2edcd84c42d6bc349dc8df099cd18f07c35c7b04685c1a4f3e6a6a9e6b30f8d48c15b7f49c
   languageName: node
   linkType: hard
 

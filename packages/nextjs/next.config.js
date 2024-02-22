@@ -14,6 +14,14 @@ const nextConfig = {
     config.externals.push("pino-pretty", "lokijs", "encoding");
     return config;
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
+  images: {
+    domains: ['gateway.pinata.cloud'],
+  }
 };
 
 module.exports = nextConfig;
