@@ -13,7 +13,7 @@ Regrow is a decentralized application built on top of the Allo Protocol. It enab
 Features
 1. Profile Creation and Management
 
-  -  [Create Profiles](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/CreateProfile.tsx): - Initiate the creation of profiles with personalized information and metadata.
+  -  [Create Profiles](https://github.com/0xChijioke/regrow/blob/main/packages/nextjs/app/create-profile/_components/CreateProfile.tsx): - Initiate the creation of profiles with personalized information and metadata.
 
   -  [Update name](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/UpdateName.tsx): - Modify the name associated with a profile.
 
