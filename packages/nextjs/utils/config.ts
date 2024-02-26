@@ -1,7 +1,7 @@
 // config.ts
-import { getIPFSClient } from "~~/services/ipfs";
+// import { getIPFSClient } from "~~/services/ipfs";
 
-export const IPFSClient = getIPFSClient();
+// export const IPFSClient = getIPFSClient();
 
 export const NATIVE = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
