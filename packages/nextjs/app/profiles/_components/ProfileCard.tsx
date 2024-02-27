@@ -10,7 +10,7 @@ const ProfileCard = ({ profile }: { profile: Profile }) => {
       <figure>
         <Image
           src={`${process.env.NEXT_PUBLIC_IPFS_READ_GATEWAY}/ipfs/bafkreifmllagjfloblieklder7xv56cqdtdaw3zydms6n7nwjhzw3byrte`}
-          alt="car!"
+          alt="profile-image"
           width={340}
           height={40}
         />

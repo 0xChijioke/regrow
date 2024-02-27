@@ -20,7 +20,7 @@ export const fetchPools = async (
     const poolId = poolIds[i];
 
     try {
-      const pool = await allo.getPool(Number(poolId));
+      const pool = poolId && (await allo.getPool(Number(poolId)));
 
       // Get the corresponding additional data for the current pool
       const additionalDataForPool = additionalPoolData[i];
