@@ -6,7 +6,7 @@ import { NextPage } from "next";
 
 const Page: NextPage = () => {
   return (
-    <div>
+    <div className="max-w-full">
       <ProfilesList />
     </div>
   );
