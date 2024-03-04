@@ -11,7 +11,7 @@ const PoolCard = ({ pool }: { pool: PoolData }) => {
           src="https://gateway.pinata.cloud/ipfs/bafkreifmllagjfloblieklder7xv56cqdtdaw3zydms6n7nwjhzw3byrte"
           width={340}
           height={40}
-          alt="profile-image"
+          alt="pool-image"
           placeholder="blur"
           blurDataURL="https://gateway.pinata.cloud/ipfs/bafkreifmllagjfloblieklder7xv56cqdtdaw3zydms6n7nwjhzw3byrte"
           priority={true}
@@ -25,9 +25,9 @@ const PoolCard = ({ pool }: { pool: PoolData }) => {
             Strategy: <Address address={pool.strategy} />
           </div>
         </div>
-        <div className="card-actions justify-end">
+        <div className="card-actions">
           <Link href={`/pool/${pool.id}`} key={pool.id}>
-            <button className="btn p-2 rounded-xl tracking-wide text-sm btn-primary">View</button>
+            <button className="btn p-2 rounded-xl tracking-wide text-sm btn-primary">More</button>
           </Link>
         </div>
       </div>
