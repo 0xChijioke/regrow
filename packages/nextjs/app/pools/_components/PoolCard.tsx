@@ -25,9 +25,9 @@ const PoolCard = ({ pool }: { pool: PoolData }) => {
             Strategy: <Address address={pool.strategy} />
           </div>
         </div>
-        <div className="card-actions">
+        <div className="">
           <Link href={`/pool/${pool.id}`} key={pool.id}>
-            <button className="btn p-2 rounded-xl tracking-wide text-sm btn-primary">More</button>
+            <button className="btn rounded-xl tracking-wide text-sm w-full btn-primary">More</button>
           </Link>
         </div>
       </div>
