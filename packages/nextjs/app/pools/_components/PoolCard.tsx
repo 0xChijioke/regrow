@@ -14,7 +14,6 @@ const PoolCard = ({ pool }: { pool: PoolData }) => {
           alt="pool-image"
           placeholder="blur"
           blurDataURL="https://gateway.pinata.cloud/ipfs/bafkreifmllagjfloblieklder7xv56cqdtdaw3zydms6n7nwjhzw3byrte"
-          priority={true}
         />
       </figure>
       <div className="card-body flex flex-col">
