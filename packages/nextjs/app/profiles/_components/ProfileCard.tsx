@@ -23,9 +23,9 @@ const ProfileCard = ({ profile }: { profile: Profile }) => {
         <div className="justify-end">
           Owner <Address address={profile.owner.id} />
         </div>
-        <div className="card-actions justify-end">
+        <div className="">
           <Link href={`/profile/${profile.id}`} key={profile.id}>
-            <button className="btn p-2 rounded-xl tracking-wide text-sm btn-primary">View</button>
+            <button className="btn rounded-xl tracking-wide text-sm w-full btn-primary">More</button>
           </Link>
         </div>
       </div>
