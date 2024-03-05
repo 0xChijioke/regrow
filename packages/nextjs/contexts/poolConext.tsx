@@ -1,5 +1,16 @@
 // PoolContext.tsx
-import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useQuery } from "react-query";
 import { fetchPools } from "~~/helpers/fetchPools";
 import useSDK from "~~/hooks/allo/useSDK";
 import { PoolData } from "~~/types/types";
@@ -21,38 +32,55 @@ export const PoolProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [orderBy, setOrderBy] = useState<string>("desc");
   const [skip, setSkip] = useState<number>(0);
   const { allo } = useSDK();
+  const prevFilters = useRef({ sortBy, orderBy });
+
+  // Fetch pool ids
+  const {
+    data: poolIds,
+    // isLoading: isLoadingPoolIds
+  } = useQuery(["poolIds", sortBy, orderBy, skip], () => fetchPoolIds(9, skip, sortBy, orderBy));
+  // console.log("fetched pool ids",poolIds)
+
+  const poolIdsArray = poolIds?.map(obj => obj.id) || [];
+
+  const {
+    data: fetchedPools,
+    // refetch,
+    // isLoading: isLoadingPools
+  } = useQuery(["pools", poolIdsArray, sortBy, orderBy, skip], () =>
+    poolIdsArray.length > 0 ? fetchPools(poolIdsArray, allo, skip, orderBy, sortBy) : undefined,
+  );
+  // console.log("fetched pools", fetchedPools)
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const fetchedPoolIds: any[] = await fetchPoolIds(9, skip, sortBy, orderBy);
-        const arrayOfIds = fetchedPoolIds.map((obj: { id: string }) => obj.id);
-        const fetchedPools = await fetchPools(arrayOfIds, allo, skip, orderBy, sortBy);
+    if (prevFilters.current.sortBy !== sortBy || prevFilters.current.orderBy !== orderBy) {
+      console.log(prevFilters);
+      // Reset the pools array if filters have changed
+      fetchedPools && setPools(fetchedPools);
+    } else if (fetchedPools) {
+      // Append the newly fetched pools to the existing ones
+      setPools(prevPools => [...prevPools, ...fetchedPools]);
+    }
 
-        // const mgPools = await fetchMicroGrantsPools()
-        // console.log(mgPools)
+    // Update the previous filters
+    prevFilters.current = { sortBy, orderBy };
+  }, [fetchedPools, sortBy, orderBy]);
 
-        setPools(fetchedPools);
-      } catch (error) {
-        // Handle error
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, [skip, orderBy, sortBy, allo]);
-
-  const fetchMorePools = () => {
+  const fetchMorePools = async () => {
+    // Increment the skip value to fetch the next set of pools
     setSkip(prevSkip => prevSkip + 9);
   };
 
-  const value = {
-    pools,
-    setPools,
-    fetchMorePools,
-    setSortBy,
-    setOrderBy,
-  };
+  const value = useMemo(
+    () => ({
+      pools,
+      setPools,
+      fetchMorePools,
+      setSortBy,
+      setOrderBy,
+    }),
+    [pools, setPools, fetchMorePools, setSortBy, setOrderBy],
+  );
 
   return <PoolContext.Provider value={value}>{children}</PoolContext.Provider>;
 };
