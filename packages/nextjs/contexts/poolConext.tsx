@@ -66,21 +66,19 @@ export const PoolProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     prevFilters.current = { sortBy, orderBy };
   }, [fetchedPools, sortBy, orderBy]);
 
-  const fetchMorePools = async () => {
-    // Increment the skip value to fetch the next set of pools
-    setSkip(prevSkip => prevSkip + 9);
-  };
+  const value = useMemo(() => {
+    const fetchMorePools = async () => {
+      setSkip(prevSkip => prevSkip + 9);
+    };
 
-  const value = useMemo(
-    () => ({
+    return {
       pools,
       setPools,
       fetchMorePools,
       setSortBy,
       setOrderBy,
-    }),
-    [pools, setPools, fetchMorePools, setSortBy, setOrderBy],
-  );
+    };
+  }, [pools, setPools, setSkip, setSortBy, setOrderBy]);
 
   return <PoolContext.Provider value={value}>{children}</PoolContext.Provider>;
 };
