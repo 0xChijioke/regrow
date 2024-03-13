@@ -176,7 +176,7 @@ const Page: NextPage = () => {
           </div>
 
           <div className="w-full justify-center mt-2 items-center text-center bg-base-300 rounded-xl p-3">
-            Evalation
+            Recent events
           </div>
           {/* Display other profile details */}
         </div>

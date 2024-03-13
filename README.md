@@ -17,7 +17,7 @@ Features
 
   -  [Update name](https://github.com/0xChijioke/regrow/blob/main/packages/nextjs/app/profile/_components/UpdateName.tsx): - Modify the name associated with a profile.
 
-  -  [Update members](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/ManageMembers.tsx): Manage members associated with a profile.
+  -  [Update members](https://github.com/0xChijioke/regrow/blob/main/packages/nextjs/app/profile/_components/UpdateMembers.tsx): Manage members associated with a profile.
 
   -  [Transfer ownership](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/TransferOwnership.tsx): Facilitate the transfer of ownership of a profile.
 
