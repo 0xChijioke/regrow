@@ -19,11 +19,9 @@ Features
 
   -  [Update members](https://github.com/0xChijioke/regrow/blob/main/packages/nextjs/app/profile/_components/UpdateMembers.tsx): Manage members associated with a profile.
 
-  -  [Transfer ownership](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/TransferOwnership.tsx): Facilitate the transfer of ownership of a profile.
+  -  [Transfer ownership](https://github.com/0xChijioke/regrow/blob/main/packages/nextjs/app/profile/_components/TransferOwnership.tsx): Facilitate the transfer of ownership of a profile.
 
-  -  [Accept Ownership](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/manage/AcceptOwnership.tsx): Accept ownership transfer requests for profiles.
-
-  -  [View Profiles](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/registry/ProfilesList.tsx): Retrieve information about existing profiles.
+  -  [Accept Ownership](https://github.com/0xChijioke/regrow/blob/main/packages/nextjs/app/profile/_components/AcceptOwnership.tsx): Accept ownership transfer requests for profiles.
 
 
 
@@ -31,7 +29,7 @@ Features
 ## Current Focus: Creating Pools with Custom Strategies
 
 
-Currently focusing on implementing the ability to [create pools](https://github.com/0xChijoke/ReGrow/blob/main/packages/nextjs/components/allo/create/CreatePoolContainer.tsx) with custom strategies using the Microgrants strategy provided by the Allo-sdk. This feature is still a work in progress to define custom strategies for managing and distributing funds within pools.
+Currently focusing on implementing the ability to [create pools]() with custom strategies using the Microgrants strategy provided by the Allo-sdk. This feature is still a work in progress to define custom strategies for managing and distributing funds within pools.
 
 ## Requirements
 
@@ -78,4 +76,4 @@ yarn start
 Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
 
 
-## Contribute!
+## Contribute
