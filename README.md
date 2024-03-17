@@ -1,10 +1,4 @@
-# 🏗 Scaffold-ETH 2 & Allo protocol
-
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Scaffold-eth-2 Documentation</a> |
-  <a href="https://docs.allo.gitcoin.co">Allo Documentation</a> |
-  <a href="https://regrow.vercel.app">Demo</a>
-</h4>
+#  Regrow 🌱
 
 Regrow is a decentralized application built on top of the Allo Protocol. It enables users to create and manage profiles.
 
@@ -77,3 +71,9 @@ Visit your app on: `http://localhost:3000`. You can interact with your smart con
 
 
 ## Contribute
+
+
+<h4 align="center">
+  <a href="https://docs.scaffoldeth.io">Scaffold-eth-2 Documentation</a> |
+  <a href="https://docs.allo.gitcoin.co">Allo Documentation</a> |
+</h4>
