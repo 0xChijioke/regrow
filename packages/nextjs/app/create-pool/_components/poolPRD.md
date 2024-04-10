@@ -7,7 +7,7 @@
     Initialize Strategy:
         Set up initialization parameters specific to your custom strategy.
         Get initialization data using a method similar to getInitializeData.
-        Create a pool with the custom strategy using a method like createPoolWithCustomStrategy.
+        Create a pool with the custom strategy using createPoolWithCustomStrategy.
 
     Wait for Pool Creation Transaction:
         Wait for the pool creation transaction to be mined using waitForTransaction.
